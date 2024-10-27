@@ -1,3 +1,23 @@
 <% layout('./layouts/boilerplate.ejs') %>
-
+<link rel="stylesheet" href="/css/index.css">
 <h1>All games</h1>
+    <div class="search-container">
+        <form action="/games" method="GET"> <!-- Adjust the action to your search route -->
+            <input 
+                type="text" 
+                name="game[name]" 
+                placeholder="Search for a game..." 
+                required 
+                aria-label="Search for a game"
+            />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+<% games.forEach(game => { %>
+    <a href="/games/<%= game.id %>">
+        <div class="game">
+        <h1><%= game.name %></h1>
+        <img src="<%= game.cover ? game.cover.url : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
+    </div>
+    </a>
+<% }) %>

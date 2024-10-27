@@ -1,0 +1,10 @@
+.game {
+    margin: 20px 0;
+    text-align: center; /* Center align text and images */
+}
+
+.game img {
+    max-width: 200px; /* Set a max width for the images */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: add some rounded corners */
+}

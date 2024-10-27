@@ -1,0 +1,19 @@
+{
+  "name": "passionflow",
+  "version": "1.0.0",
+  "description": "website for creating video game backlogs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Charlemagne4/PassionFlow.git"
+  },
+  "author": "Charlemagne4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Charlemagne4/PassionFlow/issues"
+  },
+  "homepage": "https://github.com/Charlemagne4/PassionFlow#readme"
+}

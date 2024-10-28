@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg sticky-top bg-dark text-light" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">PassionFlow</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/games">Games</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="/campgrounds/new">Add a new one</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>   
+            <div class="navbar-nav ms-auto"> <!-- Add ms-auto to push Login to the right -->
+                <% if (!currentUser) { %>
+                    <a class="nav-link" href="/login" aria-disabled="true">Login</a>
+                    <a class="nav-link" href="/Register" aria-disabled="true">Register</a>
+                <% } else { %>
+                    <a class="nav-link" href="https://warthunder.com/fr"><%= currentUser.username %></a>
+               <form action="/logout?_method=DELETE" method="POST">
+                    <button class="nav-link">
+                    <img crossorigin="anonymous" src="https://icon-library.com/images/logout-icon-transparent/logout-icon-transparent-9.jpg" alt="Logout" style="width: 25px; height: 25px;">
+                    </button>
+                </form>
+                    <% } %>
+            </div>   
+                <form class="d-flex" role="search" action="/games/search" method="GET">
+                    <input class="form-control me-2" 
+                    type="search"  
+                    name="game[name]" 
+                    placeholder="Search for a game..." 
+                    required 
+                    aria-label="Search for a game">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+        </div>
+    </div>
+</nav>

@@ -24,8 +24,7 @@ mongoose.connect(dbUrl).then(() => {
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
-//routes require
-const gamesRoutes = require('./routes/games')
+
 
 const ExpressErrorHandler = require("./Utility/ExpressErrorHandler");
 const path = require('path')
@@ -75,7 +74,10 @@ app.use('/', function (req, res, next) {
     res.locals.error = req.flash('error')
     next()
 })
-//ROUTES
+//ROUTES and routes require
+const usersRoutes = require('./routes/users')
+app.use("/", usersRoutes)
+const gamesRoutes = require('./routes/games')
 app.use("/games", gamesRoutes)
 
 

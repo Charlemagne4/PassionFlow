@@ -17,7 +17,7 @@
     <a href="/games/<%= game.id %>">
         <div class="game">
         <h1><%= game.name %></h1>
-        <img src="<%= game.cover ? game.cover.url : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
+        <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_${imageSize}/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
     </div>
     </a>
 <% }) %>

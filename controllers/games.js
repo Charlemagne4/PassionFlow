@@ -31,50 +31,54 @@ module.exports.index = async (req, res, next) => {
     }
 }
 
-module.exports.show = async (req, res, next) => {
-    const gameId = req.params.id;
-    const data = `
-        fields name, genres.name, cover.image_id, rating; where id = ${gameId};
-    `;
+module.exports.gameSearch = async (req, res, next) => {
     try {
-        // Make the Axios request
+        // Validate query parameters
+        let name = req.query.game?.name?.trim(); // Trim whitespace from input
+        let data;
+
+        // Check if name is empty after trimming
+        if (!name) {
+            req.flash('error', 'Please enter a game name to search.'); // Optional: flash an error message
+            return res.redirect('/games'); // Redirect to the games page or wherever you prefer
+        }
+
+        // If a valid name is provided, construct the search query
+        data = `
+            search "${name}"; fields name, cover.image_id, rating;
+            limit 10;
+        `;
+
+        // Make the Axios request and Extract the games data from the response
         const response = await axios.post(url, data, { headers });
+        const games = response.data;
 
-        // Extract the game data from the response
-        const game = response.data;
-
-        // Render the view with the game data
-        res.render('games/show', { game, imageSize: "720p" });
+        // Render the view with the games data
+        res.render('games/search', { games, imageSize: "logo_med" });
     } catch (err) {
         console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
         next(err);
     }
 }
 
-module.exports.gameSearch = async (req, res, next) => {
+
+module.exports.show = async (req, res, next) => {
+    const gameId = req.params.id;
+    const data = `
+        fields name,platforms.abbreviation, cover.image_id, 
+        rating, rating_count, release_dates.date, release_dates.platform.abbreviation,
+        screenshots.image_id, storyline, summary, themes.slug; 
+        where id = ${gameId};
+    `;
     try {
-        // Validate query parameters
-        let name = req.query.game?.name;
-        let data;
-        if (!name) {
-            data = `
-                fields name, cover.url, cover.image_id, rating;
-                where rating > 95;
-                limit 10;
-            `;
-        } else {
-
-            data = `
-                search "${name}"; fields name, cover.image_id, rating;
-                limit 10;
-            `;
-        }
-        // Make the Axios request and Extract the games data from the response
+        // Make the Axios request
         const response = await axios.post(url, data, { headers });
-        const games = response.data;
 
-        // Render the view with the games data
-        res.render('games/index', { games, imageSize: "logo_med" });
+        // Extract the game data from the response
+        const game = response.data[0];
+
+        // Render the view with the game data
+        res.render('games/show', { game, imageSize: "720p" });
     } catch (err) {
         console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
         next(err);

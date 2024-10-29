@@ -1,0 +1,52 @@
+/* global.css */
+
+/* Base background color for dark mode */
+body {
+    background-color: #121212; /* Dark grey background */
+    color: #E0E0E0; /* Light grey text for contrast */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Links */
+a {
+    color: #BB86FC; /* Light purple for links */
+    text-decoration: none;
+}
+a:hover {
+    color: #3700B3; /* Darker shade on hover */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF; /* Pure white for headings */
+    margin: 0;
+    padding: 0;
+}
+
+/* Buttons */
+button {
+    background-color: #1F1B24; /* Slightly lighter dark background for buttons */
+    color: #E0E0E0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #333333; /* Slightly lighter for hover effect */
+}
+
+/* Inputs */
+input, textarea {
+    background-color: #2C2C2C; /* Dark input background */
+    color: #E0E0E0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 10px;
+}
+input:focus, textarea:focus {
+    border-color: #BB86FC;
+    outline: none;
+}

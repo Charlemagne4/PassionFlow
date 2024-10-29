@@ -1,0 +1,16 @@
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/index.css">
+<h1>Search for Games</h1>
+
+<% if (games && games.length > 0) { %>
+    <% games.forEach(game => { %>
+        <a href="/games/<%= game.id %>">
+            <div class="game">
+                <h1><%= game.name %></h1>
+                <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_${imageSize}/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
+            </div>
+        </a>
+    <% }) %>
+<% } else { %>
+    <h2>No games found. Please try another search.</h2>
+<% } %>

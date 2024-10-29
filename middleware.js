@@ -15,3 +15,9 @@ module.exports.ReturnTo = (req, res, next) => {
     }
     next();
 };
+
+module.exports.trimFields = (req, res, next) => {
+    if (req.body.email) req.body.email = req.body.email.trim();
+    if (req.body.username) req.body.username = req.body.username.trim();
+    next();
+}

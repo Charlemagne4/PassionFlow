@@ -1,0 +1,81 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/globale.css">
+
+<div class="container mt-5">
+    <h1 class="text-center">Profile of <%= user.username %></h1>
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            <img src="<%= user.profileImage[0]?.url %>" alt="<%= user.username %>'s Profile Image" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+            <h3><%= user.username %></h3>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <p><strong>Bio:</strong> <%= user.bio || 'No bio available.' %></p>
+        </div>
+    </div>
+    <hr>
+    <form action="/profile/profileImage?_method=PUT" method="POST" novalidate class="myForm" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="images" class="form-label">Add more images</label>
+                <div class="input-group">
+                    <label class="input-group-text" for="images">Profile Image</label>
+                    <input type="file" class="form-control" name="profileImage[images]" id="images">
+                    <button type="submit" class="btn btn-primary">Update Profile Image</button>
+                </div>
+            </div>
+    </form>
+    
+    <!-- Edit Username -->
+    <h3>Edit Username</h3>
+    <form action="/profile/username?_method=PUT" method="POST" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="username" value="<%= user.username %>" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Update Username</button>
+        </div>
+    </form>
+
+    <!-- Edit Email -->
+    <h3>Edit Email</h3>
+    <form action="/profile/email?_method=PUT" method="POST" class="mb-4">
+        <div class="input-group">
+            <input type="email" name="email" value="<%= user.email %>" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Update Email</button>
+        </div>
+    </form>
+
+    <!-- Edit Bio -->
+    <h3>Edit Bio</h3>
+    <form action="/profile/bio?_method=PUT" method="POST" class="mb-4">
+        <div class="input-group">
+            <textarea name="bio" class="form-control" rows="3"><%= user.bio %></textarea>
+            <button type="submit" class="btn btn-primary">Update Bio</button>
+        </div>
+    </form>
+
+    <hr>
+    <h3>Favorite Genres</h3>
+    <ul class="list-group mb-4">
+        <% user.favoriteGenres.forEach(function(genre) { %>
+            <li class="list-group-item">
+                <%= genre %>
+                <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="d-inline">
+                    <input type="hidden" name="genre" value="<%= genre %>">
+                    <button type="submit" class="btn btn-danger btn-sm ms-2">Remove</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+
+    <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="newGenre" placeholder="Add a favorite genre" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Add Genre</button>
+        </div>
+    </form>
+
+    <hr>
+    <p><strong>Account Created:</strong> <%= user.createdAt.toLocaleDateString() %></p>
+    <p><strong>Last Updated:</strong> <%= user.updatedAt.toLocaleDateString() %></p>
+    <div class="text-center">
+        <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+        <a href="/profile" class="btn btn-secondary">Back to Games</a>
+    </div>
+</div>

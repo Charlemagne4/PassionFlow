@@ -1,0 +1,34 @@
+<% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/globale.css">
+<div class="container mt-5">
+        <h1 class="text-center">Profile of <%= user.username %></h1>
+        <div class="row justify-content-center">
+            <div class="col-md-4 text-center">
+                <img src="<%= user.profileImage[0]?.url %>" alt="<%= user.username %>'s Profile Image" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                <h3><%= user.username %></h3>
+                <p><strong>Email:</strong> <%= user.email %></p>
+                <p><strong>Bio:</strong> <%= user.bio || 'No bio available.' %></p>
+            </div>
+        </div>
+        <hr>
+        <h3>Favorite Genres</h3>
+        <ul class="list-group">
+            <% user.favoriteGenres.forEach(function(genre) { %>
+                <li class="list-group-item"><%= genre %></li>
+            <% }); %>
+        </ul>
+        <hr>
+        <h3>Favorite Games</h3>
+        <ul class="list-group">
+            <% user.favoriteGames.forEach(function(gameId) { %>
+                <li class="list-group-item">Game ID: <%= gameId %></li>
+            <% }); %>
+        </ul>
+        <hr>
+        <p><strong>Account Created:</strong> <%= user.createdAt.toLocaleDateString() %></p>
+        <p><strong>Last Updated:</strong> <%= user.updatedAt.toLocaleDateString() %></p>
+        <div class="text-center">
+            <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+            <a href="/games" class="btn btn-secondary">Back to Games</a>
+        </div>
+    </div>

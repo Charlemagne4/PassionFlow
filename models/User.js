@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 const passportLM = require('passport-local-mongoose');
 
+const imageSchema = new mongoose.Schema({
+    url: String,
+    fileName: String
+});
+
+imageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_300')
+})
+const options = { toJSON: { virtuals: true } };
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -16,10 +25,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    profileImage: {
-        type: String,
-        default: 'https://i.redd.it/yvw9wi1q3yi41.jpg'
-    },
+    profileImage: [imageSchema],
     favoriteGenres: [{
         type: String
     }],
@@ -35,6 +41,14 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
+// userSchema.post('findOneAndDelete', async (data) => {
+//     if (data) {
+//         await Review.deleteMany({
+//             _id: { $in: data.reviews }
+//         })
+//     }
+// })
 
 // Create User model
 userSchema.plugin(passportLM)

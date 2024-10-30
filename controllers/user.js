@@ -18,8 +18,8 @@ module.exports.registerUser = async (req, res, next) => {
         });
 
         const registeredUser = await User.register(newUser, password)
-        req.login(registeredUser, function(err){
-            if(err){return next()}
+        req.login(registeredUser, function (err) {
+            if (err) { return next() }
             req.flash('success', 'Welcome to PassionFlow')
             const urlRedirect = res.locals.returnTo || '/games'
             delete res.locals.returnTo

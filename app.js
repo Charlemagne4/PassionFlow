@@ -79,6 +79,8 @@ const usersRoutes = require('./routes/users')
 app.use("/", usersRoutes)
 const gamesRoutes = require('./routes/games')
 app.use("/games", gamesRoutes)
+const profileRoutes = require('./routes/profile');
+app.use("/profile", profileRoutes)
 
 
 app.get('/', (req, res) => {

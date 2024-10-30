@@ -1,47 +1,61 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-dark text-light" data-bs-theme="dark">
     <div class="container-fluid">
+        <!-- Brand name aligned to the left -->
         <a class="navbar-brand" href="/">PassionFlow</a>
+        
+        <!-- Toggle button for mobile view -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
+        <!-- Navbar content collapsible for smaller screens -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <!-- Left-aligned links -->
+            <ul class="navbar-nav me-5 ms-5">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/games">Games</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="/campgrounds/new">Add a new one</a>
+                    <a class="nav-link" href="/campgrounds/new">Add a new one</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>   
-            <div class="navbar-nav ms-auto"> <!-- Add ms-auto to push Login to the right -->
-                <% if (!currentUser) { %>
-                    <a class="nav-link" href="/login" aria-disabled="true">Login</a>
-                    <a class="nav-link" href="/Register" aria-disabled="true">Register</a>
-                <% } else { %>
-                    <a class="nav-link" href="https://warthunder.com/fr"><%= currentUser.username %></a>
-               <form action="/logout?_method=DELETE" method="POST">
-                    <button class="nav-link">
-                    <img crossorigin="anonymous" src="https://icon-library.com/images/logout-icon-transparent/logout-icon-transparent-9.jpg" alt="Logout" style="width: 25px; height: 25px;">
-                    </button>
-                </form>
+            </ul>
+
+            <!-- Centered search bar with better alignment -->
+            <form class="d-flex align-items-center me-2 ms-5 ps-4" role="search" action="/games/search" method="GET" style="width: 50%;">
+                <input class="form-control me-2" type="search" name="game[name]" placeholder="Search for a game..." 
+                       aria-label="Search for a game" required style="width: 100%;">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
+            <!-- Right-aligned user dropdown -->
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <% if (!currentUser) { %>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                            <img src="https://pngimg.com/uploads/pacman/pacman_PNG28.png" alt="Guest icon" style="width: 20px; height: 20px;">
+                            Guest
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/login">Login</a></li>
+                            <li><a class="dropdown-item" href="/register">Register</a></li>
+                        </ul>
+                    <% } else { %>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                            <img src="<%= currentUser.profileImage %>" alt="User icon" style="width: 20px; height: 20px;">
+                            <%= currentUser.username %>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                            <li>
+                                <form class="dropdown-item m-0 p-0" action="/logout?_method=DELETE" method="POST">
+                                    <button type="submit" class="btn btn-link text-decoration-none w-100">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     <% } %>
-            </div>   
-                <form class="myForm d-flex" role="search" action="/games/search" method="GET">
-                    <input class="form-control me-2" 
-                    type="search"  
-                    name="game[name]" 
-                    placeholder="Search for a game..." 
-                    required 
-                    aria-label="Search for a game">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     profileImage: {
         type: String,
-        default: ''
+        default: 'https://i.redd.it/yvw9wi1q3yi41.jpg'
     },
     favoriteGenres: [{
         type: String

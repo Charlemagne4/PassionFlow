@@ -7,23 +7,18 @@ const userGameListSchema = new mongoose.Schema({
         required: true
     },
     gameId: {
-        type: String, // Store the IGDB game ID
+        type: String, // Stores the unique IGDB game ID
         required: true
     },
     status: {
         type: String,
         enum: ['completed', 'ongoing', 'dropped', 'playing', 'on hold'],
         required: true
-    },
-    addedAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
     }
-});
+}, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
+
+// Add a unique compound index on userId and gameId to prevent duplicates
+userGameListSchema.index({ userId: 1, gameId: 1 }, { unique: true });
 
 // Create UserGameList model
 const UserGameList = mongoose.model('UserGameList', userGameListSchema);

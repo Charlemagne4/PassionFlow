@@ -1,5 +1,6 @@
 const axios = require('axios');
 const UserGameList = require('../models/UserGameList')
+const User = require('../models/User')
 
 // Define your headers
 const headers = {
@@ -111,19 +112,97 @@ module.exports.addToList = async (req, res, next) => {
         if (!userId) {
             req.flash('error', 'User not authenticated.'); // Optional: flash an error message
             return res.redirect(`/games/${gameId}`); // Redirect to the games page or wherever you prefer
-        } // or redirect to a login page
+        }
 
+        // Find the user's current game status
+        const userGameList = await UserGameList.findOne({ userId: userId, gameId: gameId });
 
-        // Proceed with adding the game to the user's list
+        // If the game is already in the list and the status hasn't changed, do nothing
+        if (userGameList && userGameList.status === status) {
+            req.flash('info', 'Game status is already set to this value.'); // Optional: flash an info message
+            return res.redirect(`/games/${gameId}`);
+        }
+
+        // Proceed with adding/updating the game to the user's list
         await UserGameList.updateOne(
             { userId: userId, gameId: gameId },
             { $set: { status } },
             { upsert: true }
         );
 
+        req.flash('success', `Game status updated to ${status}.`); // Optional: flash a success message
         res.redirect(`/games/${gameId}`);
     } catch (err) {
         console.error(`Error adding game to ${status} list`, err.response ? err.response.data : err.message);
         next(err);
     }
 };
+
+
+module.exports.addToFavorite = async (req, res, next) => {
+    const gameId = req.params.id;
+    const userId = req.user?.id;
+
+    try {
+        if (!userId) {
+            req.flash('error', 'User not authenticated.'); // Optional: flash an error message
+            return res.redirect(`/games/${gameId}`); // Redirect to the games page or wherever you prefer
+        }
+
+        // Find the user by userId
+        const user = await User.findById(userId);
+        if (!user) {
+            req.flash('error', 'User not found.'); // Handle case where user doesn't exist
+            return res.redirect(`/games/${gameId}`);
+        }
+
+        // Check if the game is already in the favorites
+        if (!user.favoriteGames.includes(gameId)) {
+            user.favoriteGames.push(gameId);
+            await user.save();
+            req.flash('success', 'Game added to favorites successfully.');
+        } else {
+            req.flash('info', 'Game is already in favorites.');
+        }
+
+        res.redirect(`/games/${gameId}`);
+    } catch (err) {
+        console.error(`Error adding game to favorites`, err.response ? err.response.data : err.message);
+        next(err);
+    }
+}
+
+module.exports.removeFromFavorite = async (req, res, next) => {
+    const gameId = req.params.id;
+    const userId = req.user?.id;
+
+    try {
+        if (!userId) {
+            req.flash('error', 'User not authenticated.'); // Optional: flash an error message
+            return res.redirect(`/games/${gameId}`); // Redirect to the games page or wherever you prefer
+        }
+
+        // Find the user by userId
+        const user = await User.findById(userId);
+        if (!user) {
+            req.flash('error', 'User not found.'); // Handle case where user doesn't exist
+            return res.redirect(`/games/${gameId}`);
+        }
+
+        // Check if the game is in the favorites
+        const gameIndex = user.favoriteGames.indexOf(gameId);
+        if (gameIndex !== -1) {
+            user.favoriteGames.splice(gameIndex, 1); // Remove the game from favorites
+            await user.save();
+            req.flash('success', 'Game removed from favorites successfully.');
+        } else {
+            req.flash('info', 'Game is not in favorites.');
+        }
+
+        res.redirect(`/games/${gameId}`);
+    } catch (err) {
+        console.error(`Error removing game from favorites`, err.response ? err.response.data : err.message);
+        next(err);
+    }
+}
+

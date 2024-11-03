@@ -115,3 +115,20 @@ ul li::before {
     height: 500px; /* Hauteur fixe pour une présentation uniforme */
     object-fit: cover; /* Redimensionne l'image en respectant l'aspect ratio */
 }
+.btn-danger {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: darkred;
+    color: white;
+}
+
+.btn-outline-danger {
+    transition: border-color 0.3s, color 0.3s;
+}
+
+.btn-outline-danger:hover {
+    border-color: red;
+    color: red;
+}

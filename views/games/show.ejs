@@ -51,10 +51,23 @@
                 </li>
             </ul>
         </div>
-        <!-- Heart Button -->
-        <div class="col-auto pe-1">
-            <button class="btn btn-outline-danger">💖</button>
-        </div>
+<!-- Heart Button -->
+<div class="col-auto pe-1">
+    <% if (currentUser.favoriteGames.includes(game.id)) { %>
+        <form action="/games/<%= game.id %>/unfavorite" method="POST">
+            <button class="btn btn-danger" title="Remove from favorites">
+                <span class="fw-bold">❤️</span> 
+            </button>
+        </form>
+    <% } else { %>
+        <form action="/games/<%= game.id %>/favorite" method="POST">
+            <button class="btn btn-outline-danger" title="Add to favorites">
+                <span class="fw-bold">🤍</span> 
+            </button>
+        </form>
+    <% } %>
+</div>
+
     </div>
 
     <!-- Game Summary -->

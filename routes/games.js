@@ -15,4 +15,7 @@ router.route('/:id')
 // Route to add a game to a specific status
 router.post('/:id/add-to-list/:status', games.addToList);
 
+router.post('/:id/favorite', games.addToFavorite);
+router.post('/:id/unfavorite', games.removeFromFavorite);
+
 module.exports = router;

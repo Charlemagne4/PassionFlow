@@ -6,6 +6,56 @@
 
     <!-- Game Cover Image -->
     <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>" class="game-cover">
+    
+    <!-- Dropdown Button using Bootstrap 5 -->
+    <div class="row align-items-center">
+        <!-- Dropdown Button -->
+        <div class="dropdown col-auto pe-0">
+            <button class="btn dropdown-toggle <%= status === 'completed' ? 'bg-warning text-dark' : status === 'playing' ? 'bg-success text-white' : status === 'on hold' ? 'bg-secondary text-white' : status === 'dropped' ? 'bg-danger text-white' : status === 'ToPlay' ? 'bg-primary text-white' : 'btn-secondary' %>" 
+                    type="button" 
+                    id="dropdownMenuButton" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                <span class="mx-5"><%= status ? status : 'Add to list' %></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- ToPlay -->
+                <li>
+                    <form action="/games/<%= game.id %>/add-to-list/ToPlay" method="POST" style="display: inline;">
+                        <button type="submit" class="dropdown-item">ToPlay</button>
+                    </form>
+                </li>
+                <!-- Completed -->
+                <li>
+                    <form action="/games/<%= game.id %>/add-to-list/completed" method="POST" style="display: inline;">
+                        <button type="submit" class="dropdown-item">Completed</button>
+                    </form>
+                </li>
+                <!-- Dropped -->
+                <li>
+                    <form action="/games/<%= game.id %>/add-to-list/dropped" method="POST" style="display: inline;">
+                        <button type="submit" class="dropdown-item">Dropped</button>
+                    </form>
+                </li>
+                <!-- Playing -->
+                <li>
+                    <form action="/games/<%= game.id %>/add-to-list/playing" method="POST" style="display: inline;">
+                        <button type="submit" class="dropdown-item">Playing</button>
+                    </form>
+                </li>
+                <!-- On Hold -->
+                <li>
+                    <form action="/games/<%= game.id %>/add-to-list/on-hold" method="POST" style="display: inline;">
+                        <button type="submit" class="dropdown-item">On Hold</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <!-- Heart Button -->
+        <div class="col-auto pe-1">
+            <button class="btn btn-outline-danger">💖</button>
+        </div>
+    </div>
 
     <!-- Game Summary -->
     <h2>Summary</h2>

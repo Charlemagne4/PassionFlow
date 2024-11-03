@@ -42,7 +42,7 @@
                         </ul>
                     <% } else { %>
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                            <img src="<%= currentUser.profileImage %>" alt="User icon" style="width: 20px; height: 20px;">
+                            <img src="<%= currentUser.profileImage[0]?.url %>" alt="User icon" style="width: 20px; height: 20px;">
                             <%= currentUser.username %>
                         </a>
                         <ul class="dropdown-menu">

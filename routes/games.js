@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const games = require('../controllers/games.js')
+const games = require('../controllers/games.js');
 const catchAsync = require('../Utility/catchAsync');
 
 router.route('/')
@@ -10,5 +10,9 @@ router.route('/search')
     .get(catchAsync(games.gameSearch));
 
 router.route('/:id')
-    .get(games.show)
+    .get(games.show);
+
+// Route to add a game to a specific status
+router.post('/:id/add-to-list/:status', games.addToList);
+
 module.exports = router;

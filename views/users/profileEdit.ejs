@@ -25,7 +25,7 @@
     
     <!-- Edit Username -->
     <h3>Edit Username</h3>
-    <form action="/profile/username?_method=PUT" method="POST" class="mb-4">
+    <form action="/profile/username?_method=PUT" method="POST" class="mb-4 myForm">
         <div class="input-group">
             <input type="text" name="username" value="<%= user.username %>" class="form-control" required>
             <button type="submit" class="btn btn-primary">Update Username</button>
@@ -34,7 +34,7 @@
 
     <!-- Edit Email -->
     <h3>Edit Email</h3>
-    <form action="/profile/email?_method=PUT" method="POST" class="mb-4">
+    <form action="/profile/email?_method=PUT" method="POST" class="mb-4 myForm">
         <div class="input-group">
             <input type="email" name="email" value="<%= user.email %>" class="form-control" required>
             <button type="submit" class="btn btn-primary">Update Email</button>
@@ -43,7 +43,7 @@
 
     <!-- Edit Bio -->
     <h3>Edit Bio</h3>
-    <form action="/profile/bio?_method=PUT" method="POST" class="mb-4">
+    <form action="/profile/bio?_method=PUT" method="POST" class="mb-4 myForm">
         <div class="input-group">
             <textarea name="bio" class="form-control" rows="3"><%= user.bio %></textarea>
             <button type="submit" class="btn btn-primary">Update Bio</button>
@@ -56,7 +56,7 @@
         <% user.favoriteGenres.forEach(function(genre) { %>
             <li class="list-group-item">
                 <%= genre %>
-                <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="d-inline">
+                <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="d-inline myForm">
                     <input type="hidden" name="genre" value="<%= genre %>">
                     <button type="submit" class="btn btn-danger btn-sm ms-2">Remove</button>
                 </form>
@@ -64,7 +64,7 @@
         <% }); %>
     </ul>
 
-    <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="mb-4">
+    <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="mb-4 myForm">
         <div class="input-group">
             <input type="text" name="newGenre" placeholder="Add a favorite genre" class="form-control" required>
             <button type="submit" class="btn btn-primary">Add Genre</button>

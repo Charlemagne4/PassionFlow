@@ -12,7 +12,7 @@ const userGameListSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['completed', 'ongoing', 'dropped', 'playing', 'on hold'],
+        enum: ['ToPlay', 'completed', 'dropped', 'playing', 'on hold'],
         required: true
     }
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields

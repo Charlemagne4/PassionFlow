@@ -1,4 +1,5 @@
 const User = require('../models/User'); // Adjust the path as necessary
+const { storage, cloudinary } = require('../cloudinary')
 
 exports.getUserProfile = async (req, res, next) => {
     const userId = req.user.id; // Assuming you're using Passport.js for authentication
@@ -128,7 +129,9 @@ exports.updateprofileImage = async (req, res, next) => {
         url: path
     };
     try {
-
+        if (req.user.profileImage[0]?.fileName){
+            await cloudinary.uploader.destroy(req.user.profileImage[0]?.fileName)
+        }
         const user = await User.findByIdAndUpdate(userId, {
             profileImage: profileImage,
             updatedAt: Date.now() // Update the updatedAt field

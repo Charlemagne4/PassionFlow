@@ -80,22 +80,31 @@
 
     <!-- Platforms -->
     <h3>Available on:</h3>
-    <ul>
+<ul>
+    <% if (game.platforms && Array.isArray(game.platforms)) { %>
         <% game.platforms.forEach(platform => { %>
             <li><%= platform.abbreviation %></li>
         <% }) %>
-    </ul>
+    <% } else { %>
+        <li>No platforms available</li>
+    <% } %>
+</ul>
 
     <!-- Release Dates by Platform -->
-    <h3>Release Dates</h3>
-    <ul>
+<h3>Release Dates</h3>
+<ul>
+    <% if (game.release_dates && Array.isArray(game.release_dates)) { %>
         <% game.release_dates.forEach(release => { %>
             <li>
                 <%= release.platform.abbreviation %>: 
                 <%= new Date(release.date * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
             </li>
         <% }) %>
-    </ul>
+    <% } else { %>
+        <li>No release dates available</li>
+    <% } %>
+</ul>
+
 
     <!-- Game Storyline -->
     <h2>Storyline</h2>

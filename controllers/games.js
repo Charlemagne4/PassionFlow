@@ -206,3 +206,28 @@ module.exports.removeFromFavorite = async (req, res, next) => {
     }
 }
 
+module.exports.searchRealTime = async (req, res, next) => {
+    try {
+        let name = req.query.q; // Get the search query
+        if (!name) {
+            return res.status(400).json([]); // Return empty array if no query
+        }
+
+        // Construct your search query (update according to your actual search logic)
+        const data = `
+            search "${name}"; fields name, cover.image_id;
+            limit 5;
+        `;
+
+        const response = await axios.post(url, data, { headers });
+        const games = response.data;
+
+        res.json(games); // Send the games as JSON response
+    } catch (err) {
+        console.error('Error fetching games:', err.message);
+        console.error('Error details:', err.response.data);
+    }
+};
+
+
+

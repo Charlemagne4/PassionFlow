@@ -1,4 +1,7 @@
-<nav class="navbar navbar-expand-lg sticky-top bg-dark text-light" data-bs-theme="dark">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include your custom script -->
+    <script src="/javascripts/searchBar.js"></script>
+    <nav class="navbar navbar-expand-lg sticky-top bg-dark text-light" data-bs-theme="dark">
     <div class="container-fluid">
         <!-- Brand name aligned to the left -->
         <a class="navbar-brand" href="/">PassionFlow</a>
@@ -21,12 +24,18 @@
                 </li>
             </ul>
 
-            <!-- Centered search bar with better alignment -->
-            <form class="d-flex align-items-center me-2 ms-5 ps-4" role="search" action="/games/search" method="GET" style="width: 50%;">
-                <input class="form-control me-2" type="search" name="game[name]" placeholder="Search for a game..." 
-                       aria-label="Search for a game" required style="width: 100%;">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+<!-- Centered search bar with better alignment -->
+<div id="search-container" class="position-relative" style="width: 50%; margin: 0 auto;">
+    <form id="search-form" class="d-flex align-items-center" role="search">
+        <input id="search" class="form-control me-2" type="search" name="game[name]" placeholder="Search for a game..." 
+               aria-label="Search for a game" required autocomplete="off">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+
+    <!-- Container for search results positioned below the search bar -->
+    <div id="search-results" class="bg-light border"></div>
+</div>
+
 
             <!-- Right-aligned user dropdown -->
             <ul class="navbar-nav ms-auto">
@@ -59,3 +68,4 @@
         </div>
     </div>
 </nav>
+<script src="/javascripts/searchBar.js"></script>

@@ -7,10 +7,12 @@ router.route('/')
     .get(catchAsync(games.index));
 
 router.route('/search')
-    .get(catchAsync(games.gameSearch));
+    .post(catchAsync(games.gameSearch))
+    .get(games.searchRealTime);
 
 router.route('/:id')
     .get(games.show);
+
 
 // Route to add a game to a specific status
 router.post('/:id/add-to-list/:status', games.addToList);

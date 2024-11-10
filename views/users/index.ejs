@@ -1,0 +1,69 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/globale.css">
+
+<h1>All Users</h1>
+<ul>
+    <% users.forEach(user => { %>
+        <li>
+            <h3><%= user.username %></h3>
+            <p><%= user.email %></p>
+
+            <!-- Check if the user has a profile image and display it -->
+            <% if (user.profileImage && user.profileImage.length > 0 && user.profileImage[0].url) { %>
+                <img src="<%= user.profileImage[0].url %>" alt="<%= user.username %>'s Profile" style="width: 100px; height: 100px; border-radius: 50%;">
+            <% } else { %>
+                <p>No profile picture available.</p>
+            <% } %>
+
+<% 
+    // Check if currentUser is a friend of this user
+    const isFriend = currentUser.friends.some(friend => friend.equals(user._id));
+
+    // Check if a pending friend request exists (sent by currentUser or received by currentUser)
+    const sentRequest = currentUser.friendRequests.find(request => request.userId.equals(user._id) && request.status === 'pending');
+    const receivedRequest = user.friendRequests.find(request => request.userId.equals(currentUser._id) && request.status === 'pending');
+    const acceptedRequest = currentUser.friends.find(request => request.userId.equals(user._id));
+
+    // Determine the sent and accepted dates for friend requests
+    const sentDate = sentRequest ? sentRequest.sentAt : '';
+    const acceptedDate = acceptedRequest ? new Date(acceptedRequest.acceptedAt).toLocaleString() : '';
+%>
+
+<% if (isFriend) { %>
+    <!-- If already friends, show Unfriend button -->
+    <form action="/friends/unfriend/<%= user._id %>" method="POST">
+        <button type="submit">Unfriend</button>
+    </form>
+
+<% } else if (sentRequest) { %>
+
+    <!-- If the current user has received a pending friend request from the user -->
+    <p>Friend request received on <%= sentDate %></p>
+    <form action="/friends/accept/<%= user._id %>" method="POST" style="display: inline;">
+        <button type="submit">Accept</button>
+    </form>
+    <form action="/friends/reject/<%= user._id %>" method="POST" style="display: inline;">
+        <button type="submit">Reject</button>
+    </form>
+<% } else if (receivedRequest) { %>
+    <!-- If a friend request is sent by the current user and it's pending -->
+    <p>Friend request sent on <%= sentDate %></p>
+    <!-- No buttons here since the user has sent the request -->
+<% } else if (acceptedRequest) { %>
+    <!-- If a request has been accepted, show message -->
+    <p>Friendship accepted on <%= acceptedDate %></p>
+<% } else { %>
+    <!-- If no relationship exists (no request sent or received), show Send Friend Request button -->
+    <form action="/friends/request/<%= user._id %>" method="POST">
+        <button type="submit">Send Friend Request</button>
+    </form>
+<% } %>
+
+            <% if (acceptedDate) { %>
+                <!-- If the request was accepted, show the acceptance date with time -->
+                <p>Accepted on <%= acceptedDate %></p>
+            <% } %>
+
+        </li>
+    <% }); %>
+</ul>

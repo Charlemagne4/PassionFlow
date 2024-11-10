@@ -7,8 +7,9 @@ const imageSchema = new mongoose.Schema({
 });
 
 imageSchema.virtual('thumbnail').get(function () {
-    return this.url.replace('/upload', '/upload/w_300')
-})
+    return this.url.replace('/upload', '/upload/w_300');
+});
+
 const options = { toJSON: { virtuals: true } };
 const userSchema = new mongoose.Schema({
     username: {
@@ -32,6 +33,30 @@ const userSchema = new mongoose.Schema({
     favoriteGames: [{
         type: String // Store IGDB game IDs
     }],
+    friends: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        acceptedAt: {
+            type: Date
+        }
+    }], // Array of User IDs representing accepted friends
+    friendRequests: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'accepted', 'rejected'],
+            default: 'pending'
+        },
+        sentAt: {
+            type: Date,
+            default: Date.now
+        }
+    }], // Array to store pending friend requests
     createdAt: {
         type: Date,
         default: Date.now
@@ -40,7 +65,13 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, options);
+
+userSchema.plugin(passportLM);
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
 
 // userSchema.post('findOneAndDelete', async (data) => {
 //     if (data) {
@@ -49,9 +80,3 @@ const userSchema = new mongoose.Schema({
 //         })
 //     }
 // })
-
-// Create User model
-userSchema.plugin(passportLM)
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;

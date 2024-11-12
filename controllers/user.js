@@ -169,13 +169,26 @@ module.exports.rejectFriendRequest = async (req, res) => {
 };
 
 module.exports.viewFriendsList = async (req, res) => {
-    const userId = req.user._id;
+    try {
+        const userId = req.user._id;
 
-    const user = await User.findById(userId).populate('friends.userId', 'username profileImage email'); // Populate to show friend details
+        // Retrieve user and populate friend details (only username, profileImage, and email)
+        const user = await User.findById(userId).populate('friends.userId', 'username profileImage email');
 
-    res.status(200).json({
-        friends: user.friends
-    });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Check if the user has any friends
+        if (user.friends.length === 0) {
+            return res.status(200).json({ message: "No friends found" });
+        }
+
+        res.render("users/friends", { friends: user.friends });
+    } catch (error) {
+        console.error("Error retrieving friends list:", error);
+        res.status(500).json({ error: "An error occurred while retrieving friends list" });
+    }
 };
 
 module.exports.listAllUsers = async (req, res) => {

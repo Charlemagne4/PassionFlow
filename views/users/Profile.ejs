@@ -27,8 +27,11 @@
         <hr>
         <p><strong>Account Created:</strong> <%= user.createdAt.toLocaleDateString() %></p>
         <p><strong>Last Updated:</strong> <%= user.updatedAt.toLocaleDateString() %></p>
+        
         <div class="text-center">
-            <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
-            <a href="/games" class="btn btn-secondary">Back to Games</a>
-        </div>
+                <% if (currentUser.id === user.id) { %>
+                <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+                <% } %>
+                <a href="/games" class="btn btn-secondary">Back to Games</a>
+            </div>
     </div>

@@ -1,0 +1,28 @@
+<% layout('./layouts/boilerplate.ejs') %>
+
+<div class="container">
+    <h1>Your Friends</h1>
+
+    <!-- Check if the user has any friends -->
+    <% if (friends && friends.length > 0) { %>
+        <div class="row">
+            <% friends.forEach(friend => { %>
+                <div class="col-md-4">
+                    <a href="/friends/profile/<%= friend.userId._id %>" class="text-decoration-none">
+                        <div class="card mb-4">
+                            <img src="<%= friend.userId.profileImage[0]?.thumbnail %>" 
+                                 alt="Profile Image" 
+                                 class="card-img-top friend-profile-image" />
+                            <div class="card-body text-center">
+                                <h5 class="card-title"><%= friend.userId.username %></h5>
+                                <p class="card-text text-muted"><%= friend.userId.email %></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p>You currently have no friends in your list.</p>
+    <% } %>
+</div>

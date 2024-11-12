@@ -16,6 +16,24 @@ exports.getUserProfile = async (req, res, next) => {
     }
 };
 
+exports.getFriendProfile = async (req, res, next) => {
+    const { userId } = req.params; // Retrieve userId from URL params
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).render("errors/404", { message: 'User not found' });
+        }
+
+        res.render('users/profile', { user });
+    } catch (err) {
+        console.error("Error fetching friend's profile:", err);
+        next(err);
+    }
+};
+
+
 
 exports.getEditProfilePage = async (req, res, next) => {
     const userId = req.user.id;
@@ -129,7 +147,7 @@ exports.updateprofileImage = async (req, res, next) => {
         url: path
     };
     try {
-        if (req.user.profileImage[0]?.fileName){
+        if (req.user.profileImage[0]?.fileName) {
             await cloudinary.uploader.destroy(req.user.profileImage[0]?.fileName)
         }
         const user = await User.findByIdAndUpdate(userId, {

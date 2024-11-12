@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require('../Utility/catchAsync');
 const passport = require('passport');
 const user = require('../controllers/user');
+const profile = require('../controllers/profile');
 const { ReturnTo, trimFields } = require('../middleware');
 
 // Registration and Login Routes
@@ -21,6 +22,7 @@ router.post('/friends/request/:id', catchAsync(user.sendFriendRequest));
 router.post('/friends/accept/:id', catchAsync(user.acceptFriendRequest));
 router.post('/friends/reject/:id', catchAsync(user.rejectFriendRequest));
 router.get('/friends', catchAsync(user.viewFriendsList));
+router.get('/friends/profile/:userId', catchAsync(profile.getFriendProfile));
 
 //TEST the user/friendManagement Controler
 router.get('/users', catchAsync(user.listAllUsers));

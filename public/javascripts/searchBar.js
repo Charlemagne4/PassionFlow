@@ -29,7 +29,7 @@ $(document).ready(function () {
                                                 <div class="d-flex align-items-center">
                                                     <img src="${game.cover ? `https://images.igdb.com/igdb/image/upload/t_thumb/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg'}"  
                                                         class="cover-image me-2">
-                                                    <h5 class="mb-0 game-title">${game.name}</h5>
+                                                    <h5 class="mb-0 game-title text-dark">${game.name}</h5>
                                                 </div>
                                             </a>
                                         </div>`;
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
                         } else {
                             $('#search-results').empty(); // Show the results container
-                            }
+                        }
                     },
                     error: function (err) {
                         console.error('Error searching for games:', err);

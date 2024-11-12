@@ -132,47 +132,4 @@ ul li::before {
     border-color: red;
     color: red;
 }
-/* Styles for the search results dropdown */
-#search-results {
-    display: none; /* Start hidden */
-    position: absolute; /* Positioned relative to the search form */
-    background-color: white; /* Ensure this matches your app's design */
-    border: 1px solid #ccc; /* Optional: add border for visibility */
-    z-index: 1000; /* Ensure it appears above other elements */
-    width: 100%; /* Make it the same width as the search input */
-    max-height: 600px; /* Set a max height for the dropdown */
-    overflow-y: auto; /* Enable scrolling if there are many results */
-    border-radius: 0.25rem; /* Rounded corners for aesthetic */
-    margin-top: 0; /* Ensure no margin is pushing it down */
-}
 
-.search-result-item {
-    padding: 10px; /* Padding around the text */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    border: 1px solid #ddd; /* Light border for separation */
-    border-radius: 5px; /* Rounded corners */
-    margin: 2px 0; /* Space between items */
-    overflow: hidden; /* Ensures image doesn't overflow */
-    transition: box-shadow 0.3s; /* Smooth shadow transition */
-}
-
-.search-result-item:hover {
-    background-color: #f0f0f0; /* Highlight on hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow on hover */
-}
-
-.cover-image {
-    width: 50px; /* Fixed size for consistency */
-    height: 50px; /* Fixed size for consistency */
-    object-fit: cover; /* Ensures image fits without distortion */
-    border-radius: 5px; /* Rounded corners for the image */
-}
-
-.game-title {
-    white-space: nowrap; /* Prevents text wrapping */
-    overflow: hidden; /* Hides overflow text */
-    text-overflow: ellipsis; /* Adds ellipsis for overflow */
-    color: #252525;
-    margin: 0; /* Reset margin to avoid extra spacing */
-    line-height: normal; /* Reset line height to normal */
-}

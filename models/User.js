@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const passportLM = require('passport-local-mongoose');
-
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const imageSchema = new mongoose.Schema({
     url: String,
     fileName: String
@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
 }, options);
 
 userSchema.plugin(passportLM);
-
+userSchema.plugin(mongooseLeanVirtuals);
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

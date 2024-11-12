@@ -2,7 +2,6 @@
 
 <div class="container">
     <h1>Your Friends</h1>
-
     <!-- Check if the user has any friends -->
     <% if (friends && friends.length > 0) { %>
         <div class="row">
@@ -26,3 +25,18 @@
         <p>You currently have no friends in your list.</p>
     <% } %>
 </div>
+<div class="container">
+    <h1>Search All Users</h1>
+
+    <!-- Search bar to filter users -->
+    <div class="mb-4">
+        <input type="text" id="userSearch" class="form-control" placeholder="Search users by name or email">
+    </div>
+
+    <!-- User list container -->
+    <div class="row" id="usersList">
+        <!-- Results will be dynamically inserted here by the JavaScript -->
+    </div>
+</div>
+
+<script src="/javascripts/searchUsers.js"></script>

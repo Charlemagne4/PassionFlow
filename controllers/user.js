@@ -96,9 +96,8 @@ module.exports.sendFriendRequest = async (req, res) => {
 
     await friend.save();
 
-    res.status(200).json({ message: "Friend request sent successfully." });
+    res.redirect(`/friends/profile/${friendId}`);///friends/profile/<%= friend.userId._id %>
 };
-
 
 module.exports.acceptFriendRequest = async (req, res) => {
     const { id: friendId } = req.params;
@@ -138,7 +137,7 @@ module.exports.acceptFriendRequest = async (req, res) => {
     await user.save();
     await friend.save();
 
-    res.status(200).json({ message: "Friend request accepted." });
+    res.redirect(`/friends/profile/${friendId}`);
 };
 
 module.exports.rejectFriendRequest = async (req, res) => {
@@ -165,7 +164,7 @@ module.exports.rejectFriendRequest = async (req, res) => {
     await user.save();
     await friend.save();
 
-    res.status(200).json({ message: "Friend request rejected." });
+    res.redirect(`/friends/profile/${friendId}`);
 };
 
 module.exports.viewFriendsList = async (req, res) => {
@@ -179,15 +178,42 @@ module.exports.viewFriendsList = async (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Check if the user has any friends
-        if (user.friends.length === 0) {
-            return res.status(200).json({ message: "No friends found" });
-        }
-
         res.render("users/friends", { friends: user.friends });
     } catch (error) {
         console.error("Error retrieving friends list:", error);
         res.status(500).json({ error: "An error occurred while retrieving friends list" });
+    }
+};
+
+module.exports.searchUsers = async (req, res, next) => {
+    try {
+        const query = req.query.q || ''; // Get the search query from the query parameters
+        const regex = new RegExp(query, 'i'); // Create a case-insensitive regex for the search term
+
+        const excludeUserId = req.user.id; // Replace with the actual ID you want to exclude
+
+        // Find users whose username or email matches the search query
+        const users = await User.find({
+            $and: [
+                {
+                    $or: [
+                        { username: { $regex: regex } },
+                        { email: { $regex: regex } }
+                    ]
+                },
+                { _id: { $ne: excludeUserId } } // Exclude the user with this ID
+            ]
+        }).lean({ virtuals: true }).select('username email profileImage _id');
+
+
+        // Debug: log the users to check profileImage
+        // console.log(JSON.stringify(users, null, 2)); // This will log the full structure of the users
+
+        // Send the filtered users as a JSON response
+        res.json({ users });
+    } catch (err) {
+        console.error("Error searching users:", err);
+        next(err);  // Forward the error to the next middleware (error handler)
     }
 };
 

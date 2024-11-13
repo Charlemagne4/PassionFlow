@@ -8,3 +8,53 @@
     height: auto; /* Maintain aspect ratio */
     border-radius: 10px; /* Optional: add some rounded corners */
 }
+
+/* Layout for the games grid */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Styling for each game card */
+.game-card {
+  text-decoration: none;
+  color: inherit;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.game-card:hover {
+  transform: scale(1.05);
+}
+
+.game-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.game-info {
+  padding: 15px;
+}
+
+.game-info h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.game-info p {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.game-genre {
+  font-size: 0.8em;
+  color: #888;
+  display: block;
+  margin-top: 10px;
+}

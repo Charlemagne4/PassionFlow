@@ -15,7 +15,11 @@ module.exports.index = async (req, res, next) => {
     try {
 
         const data = `
-                fields name, cover.url, cover.image_id, rating;
+                fields name,
+                cover.url,
+                cover.image_id,
+                themes.slug,
+                rating,storyline;
                 where rating > 95;
                 limit 10;
             `;
@@ -24,6 +28,10 @@ module.exports.index = async (req, res, next) => {
 
         // Extract the games data from the response
         const games = response.data;
+
+        //testing games generated 
+        console.log(games[0]);
+
 
         // Render the view with the games data
         res.render('games/index', { games, imageSize: "logo_med" });
@@ -216,7 +224,7 @@ module.exports.searchRealTime = async (req, res, next) => {
         // Construct your search query (update according to your actual search logic)
         const data = `
             search "${name}"; fields name, cover.image_id;
-            limit 5;
+            limit 8;
         `;
 
         const response = await axios.post(url, data, { headers });

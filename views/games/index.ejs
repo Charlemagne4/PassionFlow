@@ -1,11 +1,17 @@
 <% layout('./layouts/boilerplate.ejs') %>
 <link rel="stylesheet" href="/css/index.css">
+
 <h1>Hot Games</h1>
-<% games.forEach(game => { %>
-    <a href="/games/<%= game.id %>">
-        <div class="game">
-        <h1><%= game.name %></h1>
-        <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_${imageSize}/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
-    </div>
+
+<div class="games-grid">
+  <% games.forEach(game => { %>
+    <a href="/games/<%= game.id %>" class="game-card">
+      <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
+      <div class="game-info">
+        <h2><%= game.name %></h2>
+        <p><%= game.description ? game.description.substring(0, 100) + '...' : 'No description available' %></p>
+        <span class="game-genre"><%= game.genre %></span>
+      </div>
     </a>
-<% }) %>
+  <% }) %>
+</div>

@@ -1,60 +1,151 @@
+/* Variables for Colors */
+:root {
+    --background-dark: #1e1e2f;
+    --background-light: #2b2b3d;
+    --accent-line: #35354d;
+    --text-light: #f0f0f0;
+    --text-muted: #c0c0c0;
+    --text-accent: #ffcc00;
+    --rating-color: #82e683;
+    --theme-background: #3e3e5c;
+    --theme-text: #e5e5ff;
+    --shadow-dark: rgba(0, 0, 0, 0.7);
+    --shadow-light: rgba(0, 0, 0, 0.5);
+}
+
+/* General Game Styling */
 .game {
     margin: 20px 0;
     text-align: center; /* Center align text and images */
+    color: var(--text-light);
 }
 
 .game img {
     max-width: 200px; /* Set a max width for the images */
     height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Optional: add some rounded corners */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px var(--shadow-light); /* Add depth */
 }
 
 /* Layout for the games grid */
 .games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+    margin: 10px 10% 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    /* background-color: var(--background-dark); */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-dark); /* Subtle shadow */
 }
 
 /* Styling for each game card */
 .game-card {
-  text-decoration: none;
-  color: inherit;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+    background: linear-gradient(145deg, var(--background-light), var(--background-dark)); /* Gradient for modern effect */
+    border-radius: 12px;
+    box-shadow: 0 6px 12px var(--shadow-dark); /* Soft shadow */
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: grid;
+    grid-template-columns: 35% auto; /* Image column and game info column */
+    grid-template-rows: 30% auto; /* Image row and game info row */
+    grid-template-areas: 
+        "img game-info"
+        "img game-info";
 }
 
 .game-card:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px var(--shadow-dark); /* Enhanced shadow on hover */
 }
 
 .game-card img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    grid-area: img;
+    grid-row: span 2;
+    border-bottom: 3px solid var(--accent-line); /* Accent line */
 }
 
 .game-info {
-  padding: 15px;
+    grid-area: game-info;
+    display: grid;
+    grid-template-areas: 
+        "title rating"
+        "sumary sumary"
+        "theme status-button";
+    grid-template-columns: 70% 30%; /* Text and button layout */
+    grid-template-rows: 30% 50% 20%;
+    padding: 15px 15px 0;
+    color: var(--text-light);
+}
+
+.game-title {
+    grid-area: title;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0 10px 2%;
+    color: var(--text-accent);
+    white-space: normal; /* Allow text to wrap */
+    overflow: visible; /* Allow overflow to be visible */
+    text-overflow: ellipsis; /* Optional: add ellipsis if text is too long */
+    transition: opacity 0.3s ease;
+    position: relative; /* Required for positioning the tooltip */
+}
+
+
+
+
+.game-rating {
+    grid-area: rating;
+    font-size: 1.2em;
+    color: var(--rating-color); /* Green for high ratings */
+    text-align: right;
+}
+
+.game-sumary {
+    padding: 0 10px 2%;
+    grid-area: sumary;
+    grid-column: span 2; /* Span across 2 columns */
+    font-size: 0.95em;
+    color: var(--text-muted); /* Subtle light gray */
+}
+
+.status-button {
+    grid-area: status-button;
+    align-self: center;
+    text-align: right;
 }
 
 .game-info h2 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
+    font-size: 1.3em;
+    margin: 0;
+    color: var(--text-accent);
 }
 
 .game-info p {
-  font-size: 0.9em;
-  color: #555;
+    font-size: 0.9em;
+    color: var(--text-muted);
 }
 
-.game-genre {
-  font-size: 0.8em;
-  color: #888;
-  display: block;
-  margin-top: 10px;
+/* Themes Section */
+.game-themes {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    margin-top: 10px;
+    grid-area: theme;
+    padding: 0 5% 0;
+}
+
+.game-theme {
+    display: inline;
+    background-color: var(--theme-background); /* Dark accent background */
+    border-radius: 12px;
+    padding: 3px 8px;
+    font-size: 0.8em;
+    color: var(--theme-text); /* Light text */
+    margin-right: 5px;
 }

@@ -1,22 +1,39 @@
+/* Variables for Colors */
+:root {
+    --background-dark: #1e1e2f;
+    --background-light: #2b2b3d;
+    --accent-line: #35354d;
+    --text-light: #f0f0f0;
+    --text-muted: #c0c0c0;
+    --text-accent: #ffcc00;
+    --rating-color: #82e683;
+    --theme-background: #3e3e5c;
+    --theme-text: #e5e5ff;
+    --shadow-dark: rgba(0, 0, 0, 0.7);
+    --shadow-light: rgba(0, 0, 0, 0.5);
+}
 /* Basic page styling */
 body {
     font-family: Arial, sans-serif;
-    color: #f6ffd0;
+    color: var(--text-light); /* Light text color */
+    background-color: var(--background-dark); /* Dark background */
     margin: 0;
     padding: 0;
 }
 
+/* Game details card */
 .game-details {
     max-width: 800px;
     margin: 2rem auto;
     padding: 1.5rem;
-    background-color: #252525;
+    background-color: var(--background-light); /* Light background for cards */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px var(--shadow-light); /* Subtle shadow */
 }
 
+/* Headings */
 h1, h2, h3 {
-    color: #b5b977;
+    color: var(--text-accent); /* Accent color for headings */
 }
 
 h1 {
@@ -47,6 +64,7 @@ h3 {
 p {
     line-height: 1.6;
     margin: 0.5rem 0;
+    color: var(--text-muted); /* Muted text for paragraph */
 }
 
 /* Platform and themes list */
@@ -60,11 +78,12 @@ ul li {
     margin: 0.3rem 0;
     padding-left: 1.5rem;
     position: relative;
+    color: var(--text-light); /* Text color for list items */
 }
 
 ul li::before {
     content: "•";
-    color: #555;
+    color: var(--accent-line); /* Accent color for list bullets */
     position: absolute;
     left: 0;
     top: 0;
@@ -82,7 +101,7 @@ ul li::before {
     width: 100%;
     height: auto;
     border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px var(--shadow-light); /* Soft shadow for images */
     transition: transform 0.2s ease;
 }
 
@@ -104,19 +123,25 @@ ul li::before {
         font-size: 1.2rem;
     }
 }
-/* some bootstrap shenanigans repair for the image carousal */
+
+/* Some bootstrap shenanigans repair for the image carousel */
 .carousel-indicators {
-    list-style: none; /* Supprime les puces ou les chiffres si présents */
+    list-style: none; /* Remove bullets or numbers */
     padding: 0;
     margin: 0;
 }
+
 .carousel-inner img {
-    width: 100%; /* Prend toute la largeur du conteneur */
-    height: 500px; /* Hauteur fixe pour une présentation uniforme */
-    object-fit: cover; /* Redimensionne l'image en respectant l'aspect ratio */
+    width: 100%; /* Full width for images */
+    height: 500px; /* Fixed height for a uniform presentation */
+    object-fit: cover; /* Resize the image while maintaining aspect ratio */
 }
+
+/* Buttons */
 .btn-danger {
     transition: background-color 0.3s, color 0.3s;
+    background-color: var(--background-light); /* Light background for button */
+    color: var(--text-light);
 }
 
 .btn-danger:hover {
@@ -126,10 +151,11 @@ ul li::before {
 
 .btn-outline-danger {
     transition: border-color 0.3s, color 0.3s;
+    border-color: var(--accent-line); /* Border color using accent line */
+    color: var(--accent-line); /* Text color using accent line */
 }
 
 .btn-outline-danger:hover {
     border-color: red;
     color: red;
 }
-

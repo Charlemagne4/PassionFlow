@@ -1,9 +1,20 @@
-/* global.css */
-
-/* Base background color for dark mode */
+/* Variables for Colors */
+:root {
+    --background-dark: #1e1e2f;
+    --background-light: #2b2b3d;
+    --accent-line: #35354d;
+    --text-light: #f0f0f0;
+    --text-muted: #c0c0c0;
+    --text-accent: #ffcc00;
+    --rating-color: #82e683;
+    --theme-background: #3e3e5c;
+    --theme-text: #e5e5ff;
+    --shadow-dark: rgba(0, 0, 0, 0.7);
+    --shadow-light: rgba(0, 0, 0, 0.5);
+}/* Base background color for dark mode */
 body {
-    background-color: #121212; /* Dark grey background */
-    color: #E0E0E0; /* Light grey text for contrast */
+    background-color: var(--background-dark); /* Dark grey background */
+    color: var(--text-light); /* Light grey text for contrast */
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -11,7 +22,7 @@ body {
 
 /* Links */
 a {
-    color: #BB86FC; /* Light purple for links */
+    color: var(--accent-line); /* Light purple for links */
     text-decoration: none;
 }
 a:hover {
@@ -20,19 +31,20 @@ a:hover {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-    color: #FFFFFF; /* Pure white for headings */
+    color: var(--text-light); /* Pure white for headings */
     margin: 0;
     padding: 0;
 }
 
 /* Buttons */
 button {
-    background-color: #1F1B24; /* Slightly lighter dark background for buttons */
-    color: #E0E0E0;
+    background-color: var(--background-light); /* Slightly lighter dark background for buttons */
+    color: var(--text-light);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition */
 }
 button:hover {
     background-color: #333333; /* Slightly lighter for hover effect */
@@ -41,12 +53,12 @@ button:hover {
 /* Inputs */
 input, textarea {
     background-color: #2C2C2C; /* Dark input background */
-    color: #E0E0E0;
+    color: var(--text-light);
     border: 1px solid #444;
     border-radius: 5px;
     padding: 10px;
 }
 input:focus, textarea:focus {
-    border-color: #BB86FC;
+    border-color: var(--accent-line); /* Focus border using accent line */
     outline: none;
 }

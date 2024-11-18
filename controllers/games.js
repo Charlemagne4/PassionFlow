@@ -14,15 +14,28 @@ const url = 'https://api.igdb.com/v4/games';
 module.exports.index = async (req, res, next) => {
     try {
 
+        const currentYear = new Date().getFullYear();
+        const startOfYear = Math.floor(new Date(currentYear, 0, 1).getTime() / 1000); // January 1st of the current year
+        const endOfYear = Math.floor(new Date(currentYear, 11, 31, 23, 59, 59).getTime() / 1000); // December 31st of the current year
+
         const data = `
-                fields name,
-                cover.url,
-                cover.image_id,
-                themes.slug,
-                rating,storyline;
-                where rating > 95;
-                limit 10;
-            `;
+    fields name,
+           cover.url,
+           cover.image_id,
+           themes.slug,
+           rating,
+           storyline,
+           summary,
+           first_release_date,
+           total_rating,
+           total_rating_count;
+    where first_release_date >= ${startOfYear}
+      & first_release_date <= ${endOfYear}
+      & rating > 90
+      & total_rating > 40; 
+    sort total_rating desc;
+    limit 20;
+`;
         // Make the Axios request
         const response = await axios.post(url, data, { headers });
 
@@ -30,7 +43,7 @@ module.exports.index = async (req, res, next) => {
         const games = response.data;
 
         //testing games generated 
-        console.log(games[0]);
+        // console.log(games);
 
 
         // Render the view with the games data

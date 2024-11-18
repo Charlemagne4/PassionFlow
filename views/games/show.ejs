@@ -113,7 +113,7 @@
     <!-- Themes -->
     <h3>Themes</h3>
     <ul>
-        <% game.themes.forEach(theme => { %>
+        <% game.themes?.forEach(theme => { %>
             <li><%= theme.slug.replace(/-/g, ' ') %></li>
         <% }) %>
     </ul>

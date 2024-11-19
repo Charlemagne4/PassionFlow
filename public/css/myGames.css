@@ -1,0 +1,173 @@
+:root {
+    --background-dark: #1e1e2f;
+    --tab-gap: 10px;
+    --tab-bg-dropped: #dc3545;
+    --tab-bg-toPlay: #0d6efd;
+    --tab-bg-completed: #d3a211;
+    --tab-bg-favorites: #b600ad;
+    --tab-bg-playing: #198754;
+    --tab-bg-onHold: #380808;
+    --tab-bg-allGames: #818181;
+}
+
+.games-grid {
+    gap: var(--tab-gap);
+    transition: background 0.5s ease;
+}
+.headMessage {
+    text-align: center;
+    margin-top:1% ;
+    font-size: 4em;
+}
+
+.favorites .headMessage {
+    background: linear-gradient(to left, var(--tab-bg-favorites), white);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* For other browsers */
+    color: transparent; /* Make the text color transparent to show the gradient */
+}
+.completed .headMessage {
+    background: linear-gradient(to left, var(--tab-bg-completed), white);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* For other browsers */
+    color: transparent; /* Make the text color transparent to show the gradient */
+}
+.ToPlay .headMessage {
+    background: linear-gradient(to left, var(--tab-bg-toPlay), white);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* For other browsers */
+    color: transparent; /* Make the text color transparent to show the gradient */
+}
+.onHold .headMessage {
+    background: linear-gradient(to left, var(--tab-bg-onHold), white);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* For other browsers */
+    color: transparent; /* Make the text color transparent to show the gradient */
+}
+.playing .headMessage {
+    background: linear-gradient(to left, var(--tab-bg-playing), white);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* For other browsers */
+    color: transparent; /* Make the text color transparent to show the gradient */
+}
+.allGames .headMessage {
+    background: linear-gradient(to left, var(--tab-bg-allGames), white);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* For other browsers */
+    color: transparent; /* Make the text color transparent to show the gradient */
+}
+
+.games-grid.allGames {
+    background: linear-gradient(to top, var(--tab-bg-allGames), var(--background-dark));
+}
+
+.games-grid.completed {
+    background: linear-gradient(to top, var(--tab-bg-completed), var(--background-dark));
+}
+
+.games-grid.favorites {
+    background: linear-gradient(to top, var(--tab-bg-favorites), var(--background-dark));
+}
+
+.games-grid.ToPlay {
+    background: linear-gradient(to top, var(--tab-bg-toPlay), var(--background-dark));
+}
+
+.games-grid.playing {
+    background: linear-gradient(to top, var(--tab-bg-playing), var(--background-dark));
+}
+
+.games-grid.onHold {
+    background: linear-gradient(to top, var(--tab-bg-onHold), var(--background-dark));
+}
+
+.games-grid.dropped {
+    background: linear-gradient(to top, var(--tab-bg-dropped), var(--background-dark));
+}
+
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--tab-gap);
+    justify-content: center;
+    margin-top:0.5% ;
+}
+
+
+.tabs .dropped {
+    background-color: var(--tab-bg-dropped);
+}
+
+.tabs .ToPlay {
+    background-color: var(--tab-bg-toPlay);
+}
+
+.tabs .completed {
+    background-color: var(--tab-bg-completed);
+}
+
+.tabs .favorites {
+    background-color: var(--tab-bg-favorites);
+}
+
+.tabs .playing {
+    background-color: var(--tab-bg-playing);
+}
+
+.tabs .onHold {
+    background-color: var(--tab-bg-onHold);
+}
+
+.tabs .allGames {
+    background-color: var(--tab-bg-allGames);
+}
+
+.tab-link {
+    align-self: center;
+    text-align: center;
+    border-radius: 15px;
+    padding: 12px 20px; /* Add padding for better spacing */
+    font-size: 1rem; /* Increase font size slightly */
+    font-weight: bold; /* Make text bolder */
+    text-decoration: none; /* Remove underline */
+    color: #fff; /* Keep text color consistent */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    display: inline-block; /* Make the links behave more like buttons */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.tab-link:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhance the shadow on hover */
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle darkening effect on hover */
+}
+
+.tab-link.active {
+    background-color: #00000080; /* Active tab color */
+    color: #fff; /* Active text color */
+    border-radius: 15px;
+}
+
+.tab-link:focus {
+    outline: none; /* Remove outline when focused */
+    border: 2px solid #fff; /* Add border on focus for accessibility */
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tabs .tab-link {
+    flex: 1; /* Allow the links to expand and fill space evenly */
+    max-width: 150px; /* Set a max width for the links */
+    margin: 5px;
+    text-align: center;
+}
+
+.empty-message{
+    text-align: center;
+}

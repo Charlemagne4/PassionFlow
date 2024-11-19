@@ -1,0 +1,43 @@
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/myGames.css">
+
+<!-- Tabs for categories -->
+<div class="tabs">
+    <a href="/games/myGames?category=allGames" class="tab-link allGames">All Games</a>
+    <a href="/games/myGames?category=completed" class="tab-link completed">Completed</a>
+    <a href="/games/myGames?category=favorites" class="tab-link favorites">Favorites</a>
+    <a href="/games/myGames?category=ToPlay" class="tab-link ToPlay">To Play</a>
+    <a href="/games/myGames?category=playing" class="tab-link playing">Playing</a>
+    <a href="/games/myGames?category=onHold" class="tab-link onHold">On Hold</a>
+    <a href="/games/myGames?category=dropped" class="tab-link dropped">Dropped</a>
+</div>
+<div class="<%= myGamesCategory %>" >
+<% if (headMessage) { %>
+<h1 class="headMessage"><%= headMessage %></h1>
+<% } %>
+</div>
+
+
+<% if (games.length > 0) { %>
+    <div class="games-grid <%= myGamesCategory %>">
+        <% games.forEach(game => { %>
+            <a href="/games/<%= game.id %>" class="game-card">
+                <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
+                <div class="game-info">
+                    <h2 class="game-title" data-title="<%= game.name %>"><%= game.name %></h2>
+                    <span class="game-rating"><%= Math.floor(game.rating) %></span>
+                    <p class="game-sumary"><%= game.storyline ? game.storyline.substring(0, 175) + '...' : game.summary.substring(0, 175) %></p>
+                    <div class="game-themes">
+                        <% game.themes?.forEach(theme => { %>
+                            <div class="game-theme"><%= theme.slug %></div>
+                        <% }) %>
+                    </div>
+                    <button class="status-button" type="button">O</button>
+                </div>
+            </a>
+        <% }) %>
+    </div>
+<% } else { %>
+    <h2 class="empty-message"> <%= myGamesCategory %> Games list empty...</h2>
+<% } %>

@@ -250,5 +250,100 @@ module.exports.searchRealTime = async (req, res, next) => {
     }
 };
 
+module.exports.myGames = async (req, res, next) => {
+    try {
+        const currentUser = req.user;
+        const myGamesCategory = req.query.category;
+        let gamesArray = [];
+        let games = [];
+        let headMessage = ""
 
+        // Fetch games based on the category
+        let data;
+        switch (myGamesCategory) {
+            case 'completed':
+                userGameList = await UserGameList.find({
+                    userId: currentUser.id,
+                    status: 'completed'
+                });
+                gamesArray = userGameList.map(game => game.gameId); // Replace with your actual data source
+                headMessage = "Completed Games";
+                break;
+            case 'favorites':
+                gamesArray = currentUser.favoriteGames;
+                headMessage = "My Favorite Games";
+                break;
+            case 'ToPlay':
+                userGameList = await UserGameList.find({
+                    userId: currentUser.id,
+                    status: 'ToPlay'
+                });
+                gamesArray = userGameList.map(game => game.gameId); // Replace with your actual data source
+                headMessage = "next, I want to play...";
+                break;
+            case 'playing':
+                userGameList = await UserGameList.find({
+                    userId: currentUser.id,
+                    status: 'playing'
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                headMessage = "What I'm currently Playing";
+                break;
+            case 'dropped':
+                userGameList = await UserGameList.find({
+                    userId: currentUser.id,
+                    status: 'dropped'
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                headMessage = "I won't touch it again...";
+                break;
+            case 'allGames':
+                userGameList = await UserGameList.find({
+                    userId: currentUser.id
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                gamesArray = [...gamesArray, ...currentUser.favoriteGames]
+                headMessage = "All My Games";
+                break;
+            case 'onHold':
+                userGameList = await UserGameList.find({
+                    userId: currentUser.id,
+                    status: 'onHold'
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                headMessage = "I need a break";
+                break;
+            default:
+                data = []; // Default to an empty array or a fallback
+        }
+        if (!gamesArray.length) {
+            res.render('games/myGames', { games, myGamesCategory, headMessage });
+            return;
+        }
+        data = `
+                        fields name,
+                        cover.url,
+                        cover.image_id,
+                        themes.slug,
+                        rating,
+                        storyline,
+                        summary,
+                        first_release_date,
+                        total_rating,
+                        total_rating_count;
+                        where id = (${gamesArray.join(',')});
+                        sort rating desc;
+                        limit ${gamesArray.length};
+                    `;
+        // Make the Axios request
+        const response = await axios.post(url, data, { headers });
 
+        // Extract the games data from the response
+        games = response.data;
+        // Render the view with the game data
+        res.render('games/myGames', { games, imageSize: "logo_med", myGamesCategory, headMessage });
+    } catch (err) {
+        console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
+        next(err);
+    }
+}

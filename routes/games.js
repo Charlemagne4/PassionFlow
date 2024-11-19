@@ -10,9 +10,11 @@ router.route('/search')
     .post(catchAsync(games.gameSearch))
     .get(games.searchRealTime);
 
+router.route('/myGames')
+    .get(games.myGames);
+
 router.route('/:id')
     .get(games.show);
-
 
 // Route to add a game to a specific status
 router.post('/:id/add-to-list/:status', games.addToList);

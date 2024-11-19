@@ -57,8 +57,9 @@ module.exports.index = async (req, res, next) => {
 module.exports.gameSearch = async (req, res, next) => {
     try {
         // Validate query parameters
-        let name = req.query.game?.name?.trim(); // Trim whitespace from input
+        let name = req.body.game?.name?.trim(); // Trim whitespace from input
         let data;
+        // console.log(name);
 
         // Check if name is empty after trimming
         if (!name) {
@@ -68,7 +69,16 @@ module.exports.gameSearch = async (req, res, next) => {
 
         // If a valid name is provided, construct the search query
         data = `
-            search "${name}"; fields name, cover.image_id, rating;
+            search "${name}"; fields name,
+                        cover.url,
+                        cover.image_id,
+                        themes.slug,
+                        rating,
+                        storyline,
+                        summary,
+                        first_release_date,
+                        total_rating,
+                        total_rating_count;
             limit 10;
         `;
 

@@ -171,3 +171,12 @@
 .empty-message{
     text-align: center;
 }
+
+.game-card img {
+    width: 180px;
+    height: 310px;
+    object-fit: cover; /* Ensures the image covers the area and may be zoomed in */
+    border-radius: 8px; /* Optional: Add rounded corners for a polished look */
+    box-shadow: 0 4px 6px var(--shadow-dark); /* Optional: Add a shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Optional: Smooth effects for hover */
+}

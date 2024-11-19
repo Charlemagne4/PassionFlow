@@ -121,7 +121,7 @@
     <!-- Screenshots -->
     <h2>Screenshots</h2>
     <div id="screenshots" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-        <% if (game.screenshots.length > 1) { %>
+        <% if (game.screenshots && game.screenshots.length > 1) { %>
             <ol class="carousel-indicators">
                 <% game.screenshots.forEach((_, i) => { %>
                     <li data-bs-target="#screenshots" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>"></li>
@@ -130,14 +130,16 @@
         <% } %>
 
         <div class="carousel-inner">
-            <% game.screenshots.forEach((img, i) => { %>
-                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                    <img crossorigin="anonymous" class="d-block w-100" src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/<%= img.image_id %>.jpg" alt="Screenshot <%= i + 1 %>">
-                </div>
-            <% }) %>
+            <% if (game.screenshots) { %>  <!-- Ensure game.screenshots is defined -->
+                <% game.screenshots.forEach((img, i) => { %>
+                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                        <img crossorigin="anonymous" class="d-block w-100" src="https://images.igdb.com/igdb/image/upload/t_screenshot_big/<%= img.image_id %>.jpg" alt="Screenshot <%= i + 1 %>">
+                    </div>
+                <% }) %>
+            <% } %>
         </div>
 
-        <% if (game.screenshots.length > 1) { %>
+        <% if (game.screenshots && game.screenshots.length > 1) { %> <!-- Check if more than one screenshot exists -->
             <a class="carousel-control-prev" href="#screenshots" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>

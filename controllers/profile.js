@@ -1,6 +1,8 @@
 const User = require('../models/User'); // Adjust the path as necessary
 const { storage, cloudinary } = require('../cloudinary')
 const themes = require('../themes').themesById;
+const UserSettings = require('../models/UserSettings'); // Path to your UserSettings model
+
 
 exports.getUserProfile = async (req, res, next) => {
     const userId = req.user.id; // Assuming you're using Passport.js for authentication
@@ -40,8 +42,9 @@ exports.getEditProfilePage = async (req, res, next) => {
     const userId = req.user.id;
     try {
         const user = await User.findById(userId).populate('profileImage');
+        const userSettings = await UserSettings.findOne({ userId });
         console.log(user);
-        res.render("users/profileEdit", { user, themes });
+        res.render("users/profileEdit", { user, userSettings, themes });
     } catch (err) {
         return next(err);
     }
@@ -146,4 +149,23 @@ exports.updateprofileImage = async (req, res, next) => {
     }
 
 
+}
+
+exports.updatePublicGamesList = async (req, res, next) => {
+    try {
+        const userId = req.user.id;  // Assuming you're using Passport.js for authentication
+        const publicGameList = req.body.publicGameList === 'on'; // Checkbox values are sent as strings ('on' or undefined)
+
+        // Find and update the user's settings
+        const settings = await UserSettings.findOneAndUpdate(
+            { userId },  // Find by userId
+            { publicGameList },  // Update the publicGameList field
+            { new: true, upsert: true } // Create a new document if it doesn't exist, return the updated document
+        );
+
+        // Redirect or respond with success
+        res.redirect('/profile'); // Redirect to profile page or wherever you want
+    } catch (err) {
+        return next(err);
+    }
 }

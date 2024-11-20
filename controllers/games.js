@@ -1,6 +1,7 @@
 const axios = require('axios');
 const UserGameList = require('../models/UserGameList');
 const User = require('../models/User');
+const UserSettings = require('../models/UserSettings');
 
 
 // Define your headers
@@ -328,7 +329,7 @@ module.exports.myGames = async (req, res, next) => {
                 data = []; // Default to an empty array or a fallback
         }
         if (!gamesArray.length) {
-            res.render('games/myGames', { games, myGamesCategory, headMessage });
+            res.render('games/myGames', { user: currentUser, games, myGamesCategory, headMessage });
             return;
         }
         data = `
@@ -352,7 +353,118 @@ module.exports.myGames = async (req, res, next) => {
         // Extract the games data from the response
         games = response.data;
         // Render the view with the game data
-        res.render('games/myGames', { games, imageSize: "logo_med", myGamesCategory, headMessage });
+        res.render('games/myGames', { user: currentUser, games, imageSize: "logo_med", myGamesCategory, headMessage });
+    } catch (err) {
+        console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
+        next(err);
+    }
+}
+
+module.exports.userGames = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id);
+        const myGamesCategory = req.query.category;
+        let gamesArray = [];
+        let games = [];
+        let headMessage = ""
+
+        // Fetch games based on the category
+        let data;
+        switch (myGamesCategory) {
+            case 'completed':
+                userGameList = await UserGameList.find({
+                    userId: user.id,
+                    status: 'completed'
+                });
+                gamesArray = userGameList.map(game => game.gameId); // Replace with your actual data source
+                headMessage = `${user.username} has Completed these Games`;
+                break;
+            case 'favorites':
+                gamesArray = user.favoriteGames;
+                headMessage = `${user.username}'s Favorite Games`;
+                break;
+            case 'ToPlay':
+                userGameList = await UserGameList.find({
+                    userId: user.id,
+                    status: 'ToPlay'
+                });
+                gamesArray = userGameList.map(game => game.gameId); // Replace with your actual data source
+                headMessage = `next, ${user.username} want to play...`;
+                break;
+            case 'playing':
+                userGameList = await UserGameList.find({
+                    userId: user.id,
+                    status: 'playing'
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                headMessage = `${user.username} is currently Playing...`;
+                break;
+            case 'dropped':
+                userGameList = await UserGameList.find({
+                    userId: user.id,
+                    status: 'dropped'
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                headMessage = `${user.username} dropped...`;
+                break;
+            case 'allGames':
+                userGameList = await UserGameList.find({
+                    userId: user.id
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                gamesArray = [...gamesArray, ...user.favoriteGames]
+                headMessage = `${user.username}'s Library`;
+                break;
+            case 'onHold':
+                userGameList = await UserGameList.find({
+                    userId: user.id,
+                    status: 'onHold'
+                });
+                gamesArray = userGameList.map(game => game.gameId);
+                headMessage = `${user.username} needs a break from`;
+                break;
+            default:
+                data = []; // Default to an empty array or a fallback
+        }
+        if (!gamesArray.length) {
+            res.render('games/myGames', { user, games, myGamesCategory, headMessage });
+            return;
+        }
+        // Fetch user settings
+        const isPublic = await UserSettings.findOne({ userId: user.id });
+        // console.log(`isPublic.publicGameList: ${isPublic?.publicGameList}`);
+
+        if (isPublic && isPublic.publicGameList) {
+            // If the publicGameList is true, build the query and fetch data
+            data = `
+                fields name,
+                cover.url,
+                cover.image_id,
+                themes.slug,
+                rating,
+                storyline,
+                summary,
+                first_release_date,
+                total_rating,
+                total_rating_count;
+                where id = (${gamesArray.join(',')});
+                sort rating desc;
+                limit ${gamesArray.length};
+                    `;
+
+            // Make the Axios request
+            const response = await axios.post(url, data, { headers });
+
+            // Extract the games data from the response
+            games = response.data;
+
+            // Render the view with the game data
+            res.render('games/myGames', { user, games, imageSize: "logo_med", myGamesCategory, headMessage });
+        } else {
+            // If the list is not public or settings are missing
+            res.render('games/myGames', { user, games, imageSize: "logo_med", myGamesCategory, headMessage: 'List Not Public' });
+        }
+
     } catch (err) {
         console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
         next(err);

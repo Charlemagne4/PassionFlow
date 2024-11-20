@@ -69,10 +69,20 @@
     </ul>
     <button type="submit" class="btn btn-primary">Save Preferences</button>
 </form>
-
-
-
-
+<h3>Public Game List</h3>
+<form action="/profile/settings/publicGameList?_method=PUT" method="POST">
+    <div class="form-check form-switch">
+        <input class="form-check-input" 
+               type="checkbox" 
+               role="switch" 
+               id="publicGameListSwitch" 
+               name="publicGameList" 
+               <% if (userSettings && userSettings.publicGameList) { %> checked <% } %>
+        >
+        <label class="form-check-label" for="publicGameListSwitch">Make Game List Public</label>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Save Preferences</button>
+</form>
     <hr>
     <p><strong>Account Created:</strong> <%= user.createdAt.toLocaleDateString() %></p>
     <p><strong>Last Updated:</strong> <%= user.updatedAt.toLocaleDateString() %></p>

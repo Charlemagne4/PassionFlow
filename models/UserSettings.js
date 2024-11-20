@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const userSettingsSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,11 +14,17 @@ const userSettingsSchema = new mongoose.Schema({
         type: String,
         default: 'en'
     },
+    publicGameList: {
+        type: Boolean,
+        default: 'false'
+    },
     notifications: {
         email: { type: Boolean, default: true },
         sms: { type: Boolean, default: false }
     }
 });
 
-// Create Settings model
-const UserSettings = mongoose.model('Settings', userSettingsSchema);
+// Create the UserSettings model
+const UserSettings = mongoose.model('UserSettings', userSettingsSchema);
+
+module.exports = UserSettings;

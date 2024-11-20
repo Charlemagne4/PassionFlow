@@ -8,6 +8,11 @@
                 <h3><%= user.username %></h3>
                 <p><strong>Email:</strong> <%= user.email %></p>
                 <p><strong>Bio:</strong> <%= user.bio || 'No bio available.' %></p>
+                <% if (currentUser.id === user.id ) { %>
+                 <p><a href="/games/myGames?category=allGames">My games</a></p>
+                <% } else { %>
+                    <p><a href="/games/userGames/<%= user.id %>?category=allGames">games</a></p>
+                    <% } %>
             </div>
             <div class="text-center">
                 <% if (currentUser.id !== user.id) { %>

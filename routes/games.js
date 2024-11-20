@@ -13,6 +13,9 @@ router.route('/search')
 router.route('/myGames')
     .get(games.myGames);
 
+router.route('/userGames/:id')
+    .get(games.userGames);
+
 router.route('/:id')
     .get(games.show);
 

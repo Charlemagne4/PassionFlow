@@ -30,4 +30,7 @@ router.put('/bio', profile.updateBio);
 
 router.put('/favoriteGenres', profile.updateFavoriteGenres);
 
+
+router.put('/settings/publicGameList', profile.updatePublicGamesList);
+
 module.exports = router;

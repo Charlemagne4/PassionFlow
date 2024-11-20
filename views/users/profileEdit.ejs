@@ -51,25 +51,27 @@
     </form>
 
     <hr>
-    <h3>Favorite Genres</h3>
+<h3>Select Your Favorite Genres</h3>
+<form action="/profile/favoriteGenres?_method=PUT" method="POST">
     <ul class="list-group mb-4">
-        <% user.favoriteGenres.forEach(function(genre) { %>
+        <% Object.entries(themes).forEach(([id, slug]) => { %>
             <li class="list-group-item">
-                <%= genre %>
-                <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="d-inline myForm">
-                    <input type="hidden" name="genre" value="<%= genre %>">
-                    <button type="submit" class="btn btn-danger btn-sm ms-2">Remove</button>
-                </form>
+                <input 
+                    type="checkbox" 
+                    id="theme-<%= id %>" 
+                    name="selectedThemes[]" 
+                    value="<%= id %>" 
+                    <% if (currentUser.favoriteGenres && currentUser.favoriteGenres.includes(id)) { %> checked <% } %> 
+                >
+                <label for="theme-<%= id %>"><%= slug %></label>
             </li>
         <% }); %>
     </ul>
+    <button type="submit" class="btn btn-primary">Save Preferences</button>
+</form>
 
-    <form action="/profile/favoriteGenres?_method=PUT" method="POST" class="mb-4 myForm">
-        <div class="input-group">
-            <input type="text" name="newGenre" placeholder="Add a favorite genre" class="form-control" required>
-            <button type="submit" class="btn btn-primary">Add Genre</button>
-        </div>
-    </form>
+
+
 
     <hr>
     <p><strong>Account Created:</strong> <%= user.createdAt.toLocaleDateString() %></p>

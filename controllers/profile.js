@@ -1,12 +1,13 @@
 const User = require('../models/User'); // Adjust the path as necessary
 const { storage, cloudinary } = require('../cloudinary')
+const themes = require('../themes').themesById;
 
 exports.getUserProfile = async (req, res, next) => {
     const userId = req.user.id; // Assuming you're using Passport.js for authentication
 
     try {
         const user = await User.findById(userId);
-
+        user.favoriteGenres = user.favoriteGenres.map(id => themes[id]);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -40,11 +41,11 @@ exports.getEditProfilePage = async (req, res, next) => {
     try {
         const user = await User.findById(userId).populate('profileImage');
         console.log(user);
-        res.render("users/profileEdit", { user });
+        res.render("users/profileEdit", { user, themes });
     } catch (err) {
-        return next(err)
+        return next(err);
     }
-}
+};
 
 // Update Username
 exports.updateUsername = async (req, res, next) => {
@@ -105,36 +106,18 @@ exports.updateBio = async (req, res, next) => {
 };
 
 // Update Favorite Genres
-exports.updateFavoriteGenres = async (req, res, next) => {
-    const userId = req.user.id;
-    const { genre, newGenre } = req.body;
+exports.updateFavoriteGenres = async (req, res) => {
+    const { selectedThemes } = req.body; // Array of selected theme IDs
 
-    try {
-        if (genre) {
-            // Remove genre
-            const user = await User.findByIdAndUpdate(userId, {
-                $pull: { favoriteGenres: genre },
-                updatedAt: Date.now() // Update the updatedAt field
-            }, { new: true })
-            await user.save();
-            req.flash('success', "genre deleted? Successfully")
-            res.redirect('/profile');
+    // Map the selected theme IDs to their slugs
+    const favoriteGenres = selectedThemes
+    // Update the user's favorite genres
+    req.user.favoriteGenres = favoriteGenres;
 
-        } else if (newGenre) {
-            // Add new genre
-            const user = await User.findByIdAndUpdate(userId, {
-                $addToSet: { favoriteGenres: newGenre },
-                updatedAt: Date.now() // Update the updatedAt field
-            }, { new: true })
-            await user.save();
-            req.flash('success', "genre updated?  Successfully")
-            res.redirect('/profile');
-
-        }
-    } catch (err) {
-        return next(err)
-    }
-};
+    // Save the user data
+    req.user.save();
+    res.redirect('/profile');
+}
 
 
 exports.updateprofileImage = async (req, res, next) => {

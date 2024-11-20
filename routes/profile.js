@@ -28,7 +28,6 @@ router.put('/email', profile.updateEmail);
 // Update bio
 router.put('/bio', profile.updateBio);
 
-// Update favorite genres
 router.put('/favoriteGenres', profile.updateFavoriteGenres);
 
 module.exports = router;

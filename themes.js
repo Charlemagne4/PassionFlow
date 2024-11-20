@@ -1,0 +1,25 @@
+module.exports.themesById = {
+    44: "romance",
+    43: "mystery",
+    42: "erotic",
+    41: "4x-explore-expand-exploit-and-exterminate",
+    40: "party",
+    39: "warfare",
+    38: "open-world",
+    35: "kids",
+    34: "educational",
+    33: "sandbox",
+    32: "non-fiction",
+    31: "drama",
+    28: "business",
+    27: "comedy",
+    23: "stealth",
+    22: "historical",
+    21: "survival",
+    20: "thriller",
+    19: "horror",
+    18: "science-fiction",
+    17: "fantasy",
+    1: "action"
+};
+

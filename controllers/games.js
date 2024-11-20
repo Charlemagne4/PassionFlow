@@ -1,6 +1,7 @@
 const axios = require('axios');
-const UserGameList = require('../models/UserGameList')
-const User = require('../models/User')
+const UserGameList = require('../models/UserGameList');
+const User = require('../models/User');
+
 
 // Define your headers
 const headers = {

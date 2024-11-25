@@ -2,6 +2,7 @@ const axios = require('axios');
 const UserGameList = require('../models/UserGameList');
 const User = require('../models/User');
 const UserSettings = require('../models/UserSettings');
+const themesById = require('../themes').themesById;
 
 
 // Define your headers
@@ -14,93 +15,159 @@ const headers = {
 const url = 'https://api.igdb.com/v4/games';
 
 module.exports.index = async (req, res, next) => {
-    try {
+    if (req.user && req.user.favoriteGenres.length !== 0) {
+        try {
+            // Define the current year and other date ranges
+            const currentYear = new Date().getFullYear();
+            const currentDate = Math.floor(new Date().getTime() / 1000); // current time in Unix timestamp
+            const upcomingDate = Math.floor(new Date(currentYear - 5, 0, 1).getTime() / 1000); // 10 years ago
 
-        // Define the current year
-        const currentYear = new Date().getFullYear();
+            // Get user favorite themes
+            const userFavorites = req.user.favoriteGenres || [];
 
-        // Define start and end of the year (Unix timestamps)
-        const startOfYear = Math.floor(new Date(currentYear, 0, 1).getTime() / 1000);
-        const endOfYear = Math.floor(new Date(currentYear, 11, 31, 23, 59, 59).getTime() / 1000);
-
-        // Define current and upcoming dates (Unix timestamps)
-        const currentDate = Math.floor(new Date().getTime() / 1000); // current time in Unix timestamp
-        const upcomingDate = Math.floor(new Date(currentYear, new Date().getMonth() + 2, 1).getTime() / 1000);
-
-
-        const popData = `fields game_id,value,popularity_type; sort value desc; limit 50; where popularity_type = 1;`
-        // Make the Axios request to popularity api
-        let popResponse = await axios.post("https://api.igdb.com/v4/popularity_primitives", popData, { headers });
-
-        // Extract the games data from the response
-        let popGames = popResponse.data;
-        const gameIdsString = popGames.map(entry => entry.game_id).join(',');
-
-
-        // Assuming you have variables startOfYear, endOfYear, currentDate, and upcomingDate defined
-        const queries = [
-            {
-                query: `
-            fields name,
-                cover.url,
-                cover.image_id,
-                rating,
-                first_release_date;
-            where first_release_date >= ${startOfYear} & first_release_date <= ${endOfYear} & rating >= 1;
-            sort total_rating desc;
-        limit 16;
-        `,
-                category: 'newReleases'
-            },
-            {
-                query: `
-            fields name,
-                cover.url,
-                cover.image_id,
-                rating,
-                first_release_date;
-            where first_release_date > ${currentDate} & first_release_date <= ${upcomingDate} ;
-            limit 16;
-        `,
-                category: 'upcomingGames'
-            },
-            {
-                query: `
-            fields name,
-                cover.url,
-                cover.image_id,                
-                rating,               
-                first_release_date;                              
-            where id = (${gameIdsString}) &
-            rating >= 1 &
-            first_release_date >= ${startOfYear} &
-            first_release_date <= ${endOfYear} &
-            total_rating>40;
-            limit 16;
-        `,
-                category: 'mostPopularGames'
+            if (userFavorites.length === 0) {
+                throw new Error("No favorite themes provided.");
             }
-        ];
 
-        // Use axios to send multiple requests
-        const requests = queries.map(query =>
-            axios.post(url, query.query, { headers })
-        );
+            // Translate userFavorites IDs to themes
+            const themeQueries = userFavorites.map(themeId => {
+                const themeName = themesById[themeId] || res.send('themeUnknown');
+                return {
+                    themeName,
+                    query: `
+                fields name,
+                       cover.url,
+                       cover.image_id,
+                       themes.slug,
+                       rating,
+                       first_release_date;
+                where themes.slug = "${themeName}"
+                & first_release_date >= ${upcomingDate}
+                & first_release_date <= ${currentDate}
+                & rating_count > 40
+                & rating <99;
+                sort rating_count desc;
+                limit 16;
+            `
+                };
+            });
 
-        const responses = await Promise.all(requests);
+            console.log("Constructed Theme Queries:", themeQueries);
 
-        // Combine the results into a single object or array
-        const combinedResults = {
-            mostPopularGames: responses[2].data,
-            newReleases: responses[0].data,
-            upcomingGames: responses[1].data,
-        };
+            // Send multiple requests in parallel
+            const requests = themeQueries.map(themeQuery =>
+                axios.post(url, themeQuery.query, { headers }).then(response => ({
+                    theme: themeQuery.themeName,
+                    games: response.data
+                }))
+            );
 
-        // Render the view with the games data
-        res.render('games/index', { combinedResults, imageSize: "logo_med" });
-    } catch (err) {
-        console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
-        next(err);
+            const results = await Promise.all(requests);
+
+            // Combine results into an object
+            const combinedResults = results.reduce((acc, { theme, games }) => {
+                acc[theme] = games;
+                return acc;
+            }, {});
+
+            console.log("Combined Results:", combinedResults);
+
+            // Render the view with the games data
+            res.render('games/index', { combinedResults, imageSize: "logo_med" });
+        } catch (err) {
+            console.error('Error fetching data from IGDB:",', err.response ? err.response.data : err.message);
+            next(err);
+        }
+
+    } else {
+        try {
+
+            // Define the current year
+            const currentYear = new Date().getFullYear();
+
+            // Define start and end of the year (Unix timestamps)
+            const startOfYear = Math.floor(new Date(currentYear, 0, 1).getTime() / 1000);
+            const endOfYear = Math.floor(new Date(currentYear, 11, 31, 23, 59, 59).getTime() / 1000);
+
+            // Define current and upcoming dates (Unix timestamps)
+            const currentDate = Math.floor(new Date().getTime() / 1000); // current time in Unix timestamp
+            const upcomingDate = Math.floor(new Date(currentYear, new Date().getMonth() + 2, 1).getTime() / 1000);
+
+
+            const popData = `fields game_id,value,popularity_type; sort value desc; limit 50; where popularity_type = 1;`
+            // Make the Axios request to popularity api
+            let popResponse = await axios.post("https://api.igdb.com/v4/popularity_primitives", popData, { headers });
+
+            // Extract the games data from the response
+            let popGames = popResponse.data;
+            const gameIdsString = popGames.map(entry => entry.game_id).join(',');
+
+
+            // Assuming you have variables startOfYear, endOfYear, currentDate, and upcomingDate defined
+            const queries = [
+                {
+                    query: `
+                fields name,
+                    cover.url,
+                    cover.image_id,
+                    rating,
+                    first_release_date;
+                where first_release_date >= ${startOfYear} & first_release_date <= ${endOfYear} & rating >= 1;
+                sort total_rating desc;
+            limit 16;
+            `,
+                    category: 'newReleases'
+                },
+                {
+                    query: `
+                fields name,
+                    cover.url,
+                    cover.image_id,
+                    rating,
+                    first_release_date;
+                where first_release_date > ${currentDate} & first_release_date <= ${upcomingDate} ;
+                limit 16;
+            `,
+                    category: 'upcomingGames'
+                },
+                {
+                    query: `
+                fields name,
+                    cover.url,
+                    cover.image_id,                
+                    rating,               
+                    first_release_date;                              
+                where id = (${gameIdsString}) &
+                rating >= 1 &
+                first_release_date >= ${startOfYear} &
+                first_release_date <= ${endOfYear} &
+                total_rating>40;
+                limit 16;
+            `,
+                    category: 'mostPopularGames'
+                }
+            ];
+
+            // Use axios to send multiple requests
+            const requests = queries.map(query =>
+                axios.post(url, query.query, { headers })
+            );
+
+            const responses = await Promise.all(requests);
+
+            // Combine the results into a single object or array
+            const combinedResults = {
+                mostPopularGames: responses[2].data,
+                newReleases: responses[0].data,
+                upcomingGames: responses[1].data,
+            };
+
+            // Render the view with the games data
+            res.render('games/index', { combinedResults, imageSize: "logo_med" });
+        } catch (err) {
+            console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
+            next(err);
+        }
     }
 }
 

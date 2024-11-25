@@ -23,3 +23,15 @@ module.exports.themesById = {
     1: "action"
 };
 
+module.exports.genresById = {
+    2: "point-and-click",
+    4: "fighting",
+    5: "shooter",
+    7: "music",
+    8: "platform",
+    9: "puzzle",
+    10: "racing",
+    11: "real-time-strategy-rts",
+    12: "role-playing-rpg",
+    13: "simulator"
+};

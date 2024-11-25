@@ -1,23 +1,58 @@
 <% layout('./layouts/boilerplate.ejs') %>
 <link rel="stylesheet" href="/css/index.css">
 
-<h1>Hot Games</h1>
-
-<div class="games-grid">
-  <% games.forEach(game => { %>
-    <a href="/games/<%= game.id %>" class="game-card">
+<% Object.entries(combinedResults).forEach(([category, games]) => { %>
+    <h2><%= category.replace(/([A-Z])/g, ' $1').toUpperCase() %></h2> <!-- Format category name -->
+    <div class="games-grid">
+    <% if (games.length > 0) { %>
+        <% games.forEach(game => { %>
+            <a href="/games/<%= game.id %>" class="game-card">
       <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
       <div class="game-info">
-<h2 class="game-title" data-title="<%= game.name %>"><%= game.name %></h2>
-        <span class="game-rating"><%= Math.floor(game.rating) %></span>
-        <p class="game-sumary"><%= game.storyline ? game.storyline.substring(0, 175) + '...' : game.summary.substring(0, 175) %></p>
-        <div class="game-themes">
-        <% game.themes?.forEach(theme => { %>
-          <div class="game-theme"><%= theme.slug %></div>
-          <% }) %>
-        </div>
-        <button class="status-button" type="button">O</button>
-      </div>
-    </a>
-  <% }) %>
-</div>
+      <h2 class="game-title" data-title="<%= game.name %>"><%= game.name %></h2>
+              <% 
+        // Determine the review label and class based on the rating
+        let reviewLabel = '';
+        let reviewClass = '';
+
+        if (game.rating >= 95) {
+          reviewLabel = 'Overwhelmingly Positive';
+          reviewClass = 'overwhelmingly-positive';
+        } else if (game.rating >= 85) {
+          reviewLabel = 'Very Positive';
+          reviewClass = 'very-positive';
+        } else if (game.rating >= 70) {
+          reviewLabel = 'Positive';
+          reviewClass = 'positive';
+        } else if (game.rating >= 50) {
+          reviewLabel = 'Mostly Positive';
+          reviewClass = 'mostly-positive';
+        } else if (game.rating >= 40) {
+          reviewLabel = 'Mixed';
+          reviewClass = 'mixed';
+        } else if (game.rating >= 20) {
+          reviewLabel = 'Mostly Negative';
+          reviewClass = 'mostly-negative';
+        } else if (game.rating >= 10) {
+          reviewLabel = 'Negative';
+          reviewClass = 'negative';
+        } else {
+          reviewLabel = 'Overwhelmingly Negative';
+          reviewClass = 'overwhelmingly-negative';
+        }
+      %>
+
+      <!-- Output the rating with the appropriate text and class -->
+      <span class="game-rating">
+        <span class="rating-score <%= reviewClass %>"><%= Math.floor(game.rating) %></span>
+        - <%= reviewLabel %>
+      </span>
+              <!-- <button class="status-button" type="button">O</button> -->
+            </div>
+          </a>
+        <% }); %>
+    <% } else { %>
+        <p>No games found in this category.</p>
+    <% } %>
+    </div>
+<% }); %>

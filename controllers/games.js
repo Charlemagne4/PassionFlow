@@ -16,40 +16,83 @@ const url = 'https://api.igdb.com/v4/games';
 module.exports.index = async (req, res, next) => {
     try {
 
+        // Define the current year
         const currentYear = new Date().getFullYear();
-        const startOfYear = Math.floor(new Date(currentYear, 0, 1).getTime() / 1000); // January 1st of the current year
-        const endOfYear = Math.floor(new Date(currentYear, 11, 31, 23, 59, 59).getTime() / 1000); // December 31st of the current year
 
-        const data = `
-    fields name,
-           cover.url,
-           cover.image_id,
-           themes.slug,
-           rating,
-           storyline,
-           summary,
-           first_release_date,
-           total_rating,
-           total_rating_count;
-    where first_release_date >= ${startOfYear}
-      & first_release_date <= ${endOfYear}
-      & rating > 90
-      & total_rating > 40; 
-    sort total_rating desc;
-    limit 20;
-`;
-        // Make the Axios request
-        const response = await axios.post(url, data, { headers });
+        // Define start and end of the year (Unix timestamps)
+        const startOfYear = Math.floor(new Date(currentYear, 0, 1).getTime() / 1000);
+        const endOfYear = Math.floor(new Date(currentYear, 11, 31, 23, 59, 59).getTime() / 1000);
+
+        // Define current and upcoming dates (Unix timestamps)
+        const currentDate = Math.floor(new Date().getTime() / 1000); // current time in Unix timestamp
+        const upcomingDate = Math.floor(new Date(currentYear + 1, 0, 1).getTime() / 1000); // next year start date as example
+
+        const popData = `fields game_id,value,popularity_type; sort value desc; limit 50; where popularity_type = 1;`
+        // Make the Axios request to popularity api
+        let popResponse = await axios.post("https://api.igdb.com/v4/popularity_primitives", popData, { headers });
 
         // Extract the games data from the response
-        const games = response.data;
+        let popGames = popResponse.data;
+        const gameIdsString = popGames.map(entry => entry.game_id).join(',');
 
-        //testing games generated 
-        // console.log(games);
 
+        // Assuming you have variables startOfYear, endOfYear, currentDate, and upcomingDate defined
+        const queries = [
+            {
+                query: `
+            fields name,
+                cover.url,
+                cover.image_id,
+                rating,
+                first_release_date;
+            where first_release_date >= ${startOfYear} & first_release_date <= ${endOfYear} & rating >= 1;
+        `,
+                category: 'newReleases'
+            },
+            {
+                query: `
+            fields name,
+                cover.url,
+                cover.image_id,
+                rating,
+                first_release_date;
+            where first_release_date > ${currentDate} & first_release_date <= ${upcomingDate} & rating >= 1;
+        `,
+                category: 'upcomingGames'
+            },
+            {
+                query: `
+            fields name,
+                cover.url,
+                cover.image_id,                
+                rating,               
+                first_release_date;                              
+            where id = (${gameIdsString}) &
+            rating >= 1 &
+            first_release_date >= ${startOfYear} &
+            first_release_date <= ${endOfYear} &
+            total_rating>40;
+        `,
+                category: 'mostPopularGames'
+            }
+        ];
+
+        // Use axios to send multiple requests
+        const requests = queries.map(query =>
+            axios.post(url, query.query, { headers })
+        );
+
+        const responses = await Promise.all(requests);
+
+        // Combine the results into a single object or array
+        const combinedResults = {
+            mostPopularGames: responses[2].data,
+            newReleases: responses[0].data,
+            upcomingGames: responses[1].data,
+        };
 
         // Render the view with the games data
-        res.render('games/index', { games, imageSize: "logo_med" });
+        res.render('games/index', { combinedResults, imageSize: "logo_med" });
     } catch (err) {
         console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
         next(err);
@@ -170,7 +213,6 @@ module.exports.addToList = async (req, res, next) => {
         next(err);
     }
 };
-
 
 module.exports.addToFavorite = async (req, res, next) => {
     const gameId = req.params.id;

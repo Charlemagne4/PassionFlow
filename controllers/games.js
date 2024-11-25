@@ -52,7 +52,6 @@ module.exports.index = async (req, res, next) => {
                 };
             });
 
-            console.log("Constructed Theme Queries:", themeQueries);
 
             // Send multiple requests in parallel
             const requests = themeQueries.map(themeQuery =>
@@ -70,7 +69,6 @@ module.exports.index = async (req, res, next) => {
                 return acc;
             }, {});
 
-            console.log("Combined Results:", combinedResults);
 
             // Render the view with the games data
             res.render('games/index', { combinedResults, imageSize: "logo_med" });

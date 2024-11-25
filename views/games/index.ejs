@@ -10,7 +10,8 @@
       <img src="<%= game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg' %>" alt="<%= game.name %>">
       <div class="game-info">
       <h2 class="game-title" data-title="<%= game.name %>"><%= game.name %></h2>
-              <% 
+              <% if (category!=='upcomingGames') { %>
+               <% 
         // Determine the review label and class based on the rating
         let reviewLabel = '';
         let reviewClass = '';
@@ -47,6 +48,7 @@
         <span class="rating-score <%= reviewClass %>"><%= Math.floor(game.rating) %></span>
         - <%= reviewLabel %>
       </span>
+              <% } %>
               <!-- <button class="status-button" type="button">O</button> -->
             </div>
           </a>

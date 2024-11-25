@@ -25,7 +25,8 @@ module.exports.index = async (req, res, next) => {
 
         // Define current and upcoming dates (Unix timestamps)
         const currentDate = Math.floor(new Date().getTime() / 1000); // current time in Unix timestamp
-        const upcomingDate = Math.floor(new Date(currentYear + 1, 0, 1).getTime() / 1000); // next year start date as example
+        const upcomingDate = Math.floor(new Date(currentYear, new Date().getMonth() + 2, 1).getTime() / 1000);
+
 
         const popData = `fields game_id,value,popularity_type; sort value desc; limit 50; where popularity_type = 1;`
         // Make the Axios request to popularity api
@@ -46,6 +47,8 @@ module.exports.index = async (req, res, next) => {
                 rating,
                 first_release_date;
             where first_release_date >= ${startOfYear} & first_release_date <= ${endOfYear} & rating >= 1;
+            sort total_rating desc;
+        limit 16;
         `,
                 category: 'newReleases'
             },
@@ -56,7 +59,8 @@ module.exports.index = async (req, res, next) => {
                 cover.image_id,
                 rating,
                 first_release_date;
-            where first_release_date > ${currentDate} & first_release_date <= ${upcomingDate} & rating >= 1;
+            where first_release_date > ${currentDate} & first_release_date <= ${upcomingDate} ;
+            limit 16;
         `,
                 category: 'upcomingGames'
             },
@@ -72,6 +76,7 @@ module.exports.index = async (req, res, next) => {
             first_release_date >= ${startOfYear} &
             first_release_date <= ${endOfYear} &
             total_rating>40;
+            limit 16;
         `,
                 category: 'mostPopularGames'
             }

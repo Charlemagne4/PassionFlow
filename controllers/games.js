@@ -3,6 +3,7 @@ const UserGameList = require('../models/UserGameList');
 const User = require('../models/User');
 const UserSettings = require('../models/UserSettings');
 const themesById = require('../themes').themesById;
+const genresById = require('../themes').genresById;
 
 
 // Define your headers
@@ -25,13 +26,15 @@ module.exports.index = async (req, res, next) => {
             // Get user favorite themes
             const userFavorites = req.user.favoriteGenres || [];
 
-            if (userFavorites.length === 0) {
-                throw new Error("No favorite themes provided.");
-            }
-
             // Translate userFavorites IDs to themes
             const themeQueries = userFavorites.map(themeId => {
                 const themeName = themesById[themeId] || res.send('themeUnknown');
+                let genreOrThemequery = ""
+                if (genresById[themeId]) {
+                    genreOrThemequery = `genres.slug = "${themeName}"`
+                } else {
+                    genreOrThemequery = `themes.slug = "${themeName}"`
+                }
                 return {
                     themeName,
                     query: `
@@ -41,7 +44,7 @@ module.exports.index = async (req, res, next) => {
                        themes.slug,
                        rating,
                        first_release_date;
-                where themes.slug = "${themeName}"
+                where ${genreOrThemequery}
                 & first_release_date >= ${upcomingDate}
                 & first_release_date <= ${currentDate}
                 & rating_count > 40

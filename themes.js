@@ -20,6 +20,16 @@ module.exports.themesById = {
     19: "horror",
     18: "science-fiction",
     17: "fantasy",
+    13: "simulator",
+    12: "role-playing-rpg",
+    11: "real-time-strategy-rts",
+    10: "racing",
+    9: "puzzle",
+    8: "platform",
+    7: "music",
+    5: "shooter",
+    4: "fighting",
+    2: "point-and-click",
     1: "action"
 };
 

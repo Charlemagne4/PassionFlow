@@ -16,6 +16,10 @@ router.route('/myGames')
 router.route('/userGames/:id')
     .get(games.userGames);
 
+router.route('/advancedSearch')
+    .post(games.advancedSearchJSON)
+    .get(games.advancedSearch);
+
 router.route('/:id')
     .get(games.show);
 

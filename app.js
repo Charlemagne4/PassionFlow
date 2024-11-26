@@ -23,6 +23,8 @@ mongoose.connect(dbUrl).then(() => {
 //security requirements 
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const cors = require('cors');
+app.use(cors());
 
 
 
@@ -38,7 +40,7 @@ app.engine("ejs", ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')))
-
+app.use(express.json());
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,

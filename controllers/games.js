@@ -4,6 +4,7 @@ const User = require('../models/User');
 const UserSettings = require('../models/UserSettings');
 const themesById = require('../themes').themesById;
 const genresById = require('../themes').genresById;
+const platforms = require('../platforms').platforms;
 
 
 // Define your headers
@@ -584,4 +585,21 @@ module.exports.userGames = async (req, res, next) => {
         console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
         next(err);
     }
+}
+
+module.exports.advancedSearch = async (req, res, next) => {
+    const popPlatforms = [8, 6, 163, 9, 11, 339, 167, 169, 165, 390, 7, 48, 12, 49, 39, 130]
+    const popThemes = [1, 3, 19, 18, 12, 10, 5]
+    res.render('games/advancedSearch', { platforms, popPlatforms, themesById, popThemes })
+}
+
+module.exports.advancedSearchJSON = async (req, res) => {
+    const query = req.body;
+
+    console.log('Received data:', { query });
+    // Return a mock response for testing
+    res.json({
+        message: 'Search successful!',
+        receivedData: { query },
+    });
 }

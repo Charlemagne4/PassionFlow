@@ -1,0 +1,21 @@
+/* Style for the Number Inputs */
+.range-slider-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Style for the Number Inputs */
+input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Optional styling for the span between inputs */
+span {
+    font-size: 16px;
+    font-weight: bold;
+}

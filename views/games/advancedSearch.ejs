@@ -1,0 +1,98 @@
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/advancedSearch.css">
+
+
+<form class="search-container" action="/games/advancedSearch" method="POST">
+        <!-- date configuration -->
+
+    <!-- Date Range Configuration -->
+<div class="date-slider">
+        <label for="searchDate">Select a release year range:</label>
+        <div class="range-slider-container">
+            <!-- Number Inputs for Start and End Date -->
+            <input type="number" 
+            id="startValueInput" 
+            name="startYear" 
+            value="1958" 
+            min="1958" max="2024" 
+            aria-label="Start Year">
+            <span>to</span>
+            <input type="number" 
+            id="endValueInput" 
+            name="endYear" 
+            value="2024" 
+            min="1958" max="2024" aria-label="End Year">
+        </div>
+    </div>
+        <!-- platform configuration -->
+        <div class="platform-search-container">
+            <!-- Search Bar -->
+            <input 
+                type="text" 
+                id="platform-search" 
+                placeholder="Search platforms..." 
+                oninput="filterPlatforms()" />
+            <button type="button" id="reset-platforms" onclick="resetPlatforms()">Reset</button>
+            
+            <!-- Platform List -->
+            <div class="platform-container" id="platform-list">
+                    <% platforms.forEach(platform => { %>
+                        <div class="platform-item" 
+                            data-platform-id="<%= platform.id %>"
+                            <% if (!popPlatforms.includes(platform.id)) { %>
+                                style="display:none"
+                            <% } %>>
+                            <input 
+                                type="checkbox" 
+                                id="platform-<%= platform.id %>" 
+                                name="platforms[]" 
+                                value="<%= platform.id %>" 
+                                />
+                            <label for="platform-<%= platform.id %>"><%= platform.name %></label>
+                        </div>
+                    <% }) %>
+            </div>
+        </div>
+
+        <!-- genre/theme configuration -->
+        <div class="theme-search-container">
+            <!-- Search Bar -->
+            <input 
+                type="text" 
+                id="theme-search" 
+                placeholder="Search themes..." 
+                oninput="filterThemes()" />
+            <button type="button" id="reset-themes" onclick="resetThemes()">Reset</button>
+
+            <!-- Theme List -->
+            <div class="theme-container" id="theme-list">
+                <% Object.entries(themesById).forEach(([themeId, themeName]) => { %>
+                    <div class="theme-item" 
+                        data-theme-id="<%= themeId %>"
+                        <% if (!popThemes.includes(parseInt(themeId))) { %>
+                            style="display:none"
+                        <% } %>>
+                        <input 
+                            type="checkbox" 
+                            id="theme-<%= themeId %>" 
+                            name="themes[]" 
+                            value="<%= themeId %>" 
+                        />
+                        <label for="theme-<%= themeId %>"><%= themeName %></label>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    <button>
+        search
+    </button>
+</form>
+<!-- Add a container to display search results dynamically -->
+<div id="game-results"></div>
+
+<script>
+    const popPlatforms = <%- JSON.stringify(popPlatforms) %>;
+    const popThemes = <%- JSON.stringify(popThemes) %>;
+</script>
+<script src="/javascripts/advancedSearch.js"></script>
+<script src="/javascripts/advancedSearchDataHandling.js"></script>

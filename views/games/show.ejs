@@ -116,6 +116,9 @@
         <% game.themes?.forEach(theme => { %>
             <li><%= theme.slug.replace(/-/g, ' ') %></li>
         <% }) %>
+        <% game.genres?.forEach(genre => { %>
+            <li><%= genre.slug.replace(/-/g, ' ') %></li>
+        <% }) %>
     </ul>
 
     <!-- Screenshots -->

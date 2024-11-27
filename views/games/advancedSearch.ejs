@@ -1,29 +1,38 @@
 <% layout('./layouts/boilerplate.ejs') %>
 <link rel="stylesheet" href="/css/advancedSearch.css">
+<link rel="stylesheet" href="/css/index.css">
 
 
 <form class="search-container" action="/games/advancedSearch" method="POST">
-        <!-- date configuration -->
-
-    <!-- Date Range Configuration -->
-<div class="date-slider">
-        <label for="searchDate">Select a release year range:</label>
-        <div class="range-slider-container">
-            <!-- Number Inputs for Start and End Date -->
-            <input type="number" 
-            id="startValueInput" 
-            name="startYear" 
-            value="1958" 
-            min="1958" max="2024" 
-            aria-label="Start Year">
-            <span>to</span>
-            <input type="number" 
-            id="endValueInput" 
-            name="endYear" 
-            value="2024" 
-            min="1958" max="2024" aria-label="End Year">
+        <!-- name to Search configuration -->
+        <div class="search-name">
+            <input 
+                type="text" 
+                id="name-search" 
+                name="nameSearch"
+                placeholder="Search game..." 
+                oninput="" />
         </div>
-    </div>
+        <!-- Date Range Configuration -->
+        <div class="date-slider">
+                <label for="searchDate">Select a release year range:</label>
+                <div class="range-slider-container">
+                    <!-- Number Inputs for Start and End Date -->
+                    <input type="number" 
+                    id="startValueInput" 
+                    name="startYear" 
+                    value="1958" 
+                    min="1958" max="2024" 
+                    aria-label="Start Year">
+                    <span>to</span>
+                    <input type="number" 
+                    id="endValueInput" 
+                    name="endYear" 
+                    value="2024" 
+                    min="1958" max="2024" aria-label="End Year">
+                </div>
+        </div>
+        
         <!-- platform configuration -->
         <div class="platform-search-container">
             <!-- Search Bar -->
@@ -88,7 +97,7 @@
     </button>
 </form>
 <!-- Add a container to display search results dynamically -->
-<div id="game-results"></div>
+<div id="game-results" class="games-grid"></div>
 
 <script>
     const popPlatforms = <%- JSON.stringify(popPlatforms) %>;

@@ -220,7 +220,7 @@ module.exports.show = async (req, res, next) => {
     const data = `
         fields name, platforms.abbreviation, cover.image_id, 
         rating, rating_count, release_dates.date, release_dates.platform.abbreviation,
-        screenshots.image_id, storyline, summary, themes.slug; 
+        screenshots.image_id, storyline, summary, themes.slug, genres.slug; 
         where id = ${gameId};
     `;
 
@@ -593,13 +593,63 @@ module.exports.advancedSearch = async (req, res, next) => {
     res.render('games/advancedSearch', { platforms, popPlatforms, themesById, popThemes })
 }
 
-module.exports.advancedSearchJSON = async (req, res) => {
-    const query = req.body;
+module.exports.advancedSearchJSON = async (req, res, next) => {
+    try {
+        const query = req.body;
+        //console.log(query);
 
-    console.log('Received data:', { query });
-    // Return a mock response for testing
-    res.json({
-        message: 'Search successful!',
-        receivedData: { query },
-    });
+        // Convert startYear and endYear to UNIX timestamps
+        const startOfYear = Math.floor(new Date(`${query.startYear}-01-01T00:00:00Z`).getTime() / 1000);
+        const endOfYear = Math.floor(new Date(`${query.endYear}-12-31T23:59:59Z`).getTime() / 1000);
+        let genreArray = []
+        let themeArray = []
+
+
+        query.themes.forEach(themeId => {
+            if (genresById[themeId]) {
+                genreArray.push(genresById[themeId])
+            } else {
+                themeArray.push(themesById[themeId])
+            }
+        })
+        // console.log("genre Array:", genreArray);
+        // console.log("theme Array:", themeArray);
+
+        const themeString = themeArray.map(theme => `"${theme}"`).join(", ");
+        const genreString = genreArray.map(genre => `"${genre}"`).join(", ");
+        const platformString = query.platforms.map(platform => `${platform}`).join(", ");
+
+        const data = `
+            ${query.searchQuery ? `search "${query.searchQuery}";` : ``}
+            fields name, cover.url, cover.image_id, themes.slug, rating, first_release_date;
+            where
+            ${themeString ? `themes.slug = (${themeString.split(',').join(') & themes.slug = (')})` : ``}
+            ${themeString && genreString ? ` & ` : ``}
+            ${genreString ? `genres.slug = (${genreString.split(',').join(') & genres.slug = (')})` : ``}
+            ${themeString || genreString ? ` & ` : ``}
+            first_release_date >= ${startOfYear} 
+            ${platformString ? ` & platforms = (${platformString.split(',').join(') & platforms = (')})` : ``}
+            & first_release_date <= ${endOfYear};
+            limit 50;
+            `
+            .replace(/\s+&\s+$/, '') // Removes trailing ' & ' if it's added unnecessarily.
+            .trim();
+        //console.log('data:/n ', data);
+
+        const response = await axios.post(url, data, { headers });
+        const games = response.data;
+
+        // console.log('games:/n ', games);
+
+
+
+
+        // Return a mock response for testing
+        res.json({
+            games,
+        });
+    } catch (err) {
+        console.error('Error fetching data from IGDB:', err.response ? err.response.data : err.message);
+        next(err);
+    }
 }

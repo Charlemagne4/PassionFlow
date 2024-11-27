@@ -14,8 +14,4 @@ input[type="number"] {
     font-size: 16px;
 }
 
-/* Optional styling for the span between inputs */
-span {
-    font-size: 16px;
-    font-weight: bold;
-}
+

@@ -1,9 +1,9 @@
 <% layout('./layouts/boilerplate.ejs') %>
-<link rel="stylesheet" href="/css/advancedSearch.css">
 <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/advancedSearch.css">
 
-
-<form class="search-container" action="/games/advancedSearch" method="POST">
+<div class="game-explore">
+<form class="search-container">
         <!-- name to Search configuration -->
         <div class="search-name">
             <input 
@@ -32,7 +32,7 @@
                     min="1958" max="2024" aria-label="End Year">
                 </div>
         </div>
-        
+        <div>
         <!-- platform configuration -->
         <div class="platform-search-container">
             <!-- Search Bar -->
@@ -92,12 +92,13 @@
                 <% }) %>
             </div>
         </div>
-    <button>
-        search
-    </button>
+        </div>
+        
 </form>
 <!-- Add a container to display search results dynamically -->
 <div id="game-results" class="games-grid"></div>
+
+</div>
 
 <script>
     const popPlatforms = <%- JSON.stringify(popPlatforms) %>;

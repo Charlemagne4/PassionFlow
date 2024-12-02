@@ -66,20 +66,20 @@ function resetThemes() {
 const startValueInput = document.getElementById('startValueInput');
 const endValueInput = document.getElementById('endValueInput');
 
-// Update the values when the number inputs are changed
-startValueInput.addEventListener('input', () => {
-    if (parseInt(startValueInput.value) > parseInt(endValueInput.value)) {
-        endValueInput.value = startValueInput.value; // Ensure end year is not less than start year
-    }
-    updateRange();
-});
+// // Update the values when the number inputs are changed
+// startValueInput.addEventListener('input', () => {
+//     if (parseInt(startValueInput.value) > parseInt(endValueInput.value)) {
+//         endValueInput.value = startValueInput.value; // Ensure end year is not less than start year
+//     }
+//     updateRange();
+// });
 
-endValueInput.addEventListener('input', () => {
-    if (parseInt(startValueInput.value) > parseInt(endValueInput.value)) {
-        startValueInput.value = endValueInput.value; // Ensure start year is not greater than end year
-    }
-    updateRange();
-});
+// endValueInput.addEventListener('input', () => {
+//     if (parseInt(startValueInput.value) > parseInt(endValueInput.value)) {
+//         startValueInput.value = endValueInput.value; // Ensure start year is not greater than end year
+//     }
+//     updateRange();
+// });
 
 // Function to display the selected range
 function updateRange() {

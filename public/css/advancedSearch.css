@@ -15,3 +15,21 @@ input[type="number"] {
 }
 
 
+.game-explore{
+    display: grid;
+    grid-template: "search-container games-grid";
+    overflow: auto;
+}
+
+.games-grid{
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+    grid-area: games-grid;  
+}
+.search-container{
+     margin: 0;
+      position: sticky;
+       top: 0;
+grid-area: search-container;
+}

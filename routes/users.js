@@ -4,7 +4,7 @@ const catchAsync = require('../Utility/catchAsync');
 const passport = require('passport');
 const user = require('../controllers/user');
 const { getFriendProfile } = require('../controllers/profile');
-const { ReturnTo, trimFields } = require('../middleware');
+const { ReturnTo, isLoggedIn, trimFields } = require('../middleware');
 
 // Registration and Login Routes
 router.route('/register')
@@ -18,14 +18,14 @@ router.route('/login')
 router.delete('/logout', user.logout);
 
 // Friend Routes
-router.post('/friends/request/:id', catchAsync(user.sendFriendRequest));
-router.post('/friends/accept/:id', catchAsync(user.acceptFriendRequest));
-router.post('/friends/reject/:id', catchAsync(user.rejectFriendRequest));
-router.get('/friends', catchAsync(user.viewFriendsList));
-router.get('/friends/profile/:userId', catchAsync(getFriendProfile));
+router.post('/friends/request/:id', isLoggedIn, catchAsync(user.sendFriendRequest));
+router.post('/friends/accept/:id', isLoggedIn, catchAsync(user.acceptFriendRequest));
+router.post('/friends/reject/:id', isLoggedIn, catchAsync(user.rejectFriendRequest));
+router.get('/friends', isLoggedIn, catchAsync(user.viewFriendsList));
+router.get('/friends/profile/:userId', isLoggedIn, catchAsync(getFriendProfile));
 
 //TEST the user/friendManagement Controler
-router.get('/users', catchAsync(user.listAllUsers));
+router.get('/users', isLoggedIn, catchAsync(user.listAllUsers));
 
 router.get('/users/search', user.searchUsers);
 module.exports = router;

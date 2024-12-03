@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const games = require('../controllers/games.js');
 const catchAsync = require('../Utility/catchAsync');
+const { isLoggedIn } = require('../middleware');
 
 router.route('/')
     .get(catchAsync(games.index));
@@ -11,7 +12,7 @@ router.route('/search')
     .get(games.searchRealTime);
 
 router.route('/myGames')
-    .get(games.myGames);
+    .get(isLoggedIn, games.myGames);
 
 router.route('/userGames/:id')
     .get(games.userGames);
@@ -24,9 +25,9 @@ router.route('/:id')
     .get(games.show);
 
 // Route to add a game to a specific status
-router.post('/:id/add-to-list/:status', games.addToList);
+router.post('/:id/add-to-list/:status', isLoggedIn, games.addToList);
 
-router.post('/:id/favorite', games.addToFavorite);
-router.post('/:id/unfavorite', games.removeFromFavorite);
+router.post('/:id/favorite', isLoggedIn, games.addToFavorite);
+router.post('/:id/unfavorite', isLoggedIn, games.removeFromFavorite);
 
 module.exports = router;

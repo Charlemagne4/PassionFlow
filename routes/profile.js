@@ -4,33 +4,33 @@ const catchAsync = require('../Utility/catchAsync');
 const passport = require('passport')
 const profile = require('../controllers/profile');
 const Multer = require('multer')
-const { ReturnTo, trimFields } = require('../middleware');
+const { ReturnTo, isLoggedIn, trimFields } = require('../middleware');
 const { storage, cloudinary } = require('../cloudinary')
 const upload = Multer({ storage })
 
 
 
 router.route('/')
-    .get(catchAsync(profile.getUserProfile));
+    .get(isLoggedIn, catchAsync(profile.getUserProfile));
 
 router.route('/edit')
-    .get(profile.getEditProfilePage);
+    .get(isLoggedIn, profile.getEditProfilePage);
 
 // Update profileImage
-router.put('/profileImage', upload.single('profileImage[images]'), profile.updateprofileImage);
+router.put('/profileImage', isLoggedIn, upload.single('profileImage[images]'), profile.updateprofileImage);
 
 // Update username
-router.put('/username', profile.updateUsername);
+router.put('/username', isLoggedIn, profile.updateUsername);
 
 // Update email
-router.put('/email', profile.updateEmail);
+router.put('/email', isLoggedIn, profile.updateEmail);
 
 // Update bio
-router.put('/bio', profile.updateBio);
+router.put('/bio', isLoggedIn, profile.updateBio);
 
-router.put('/favoriteGenres', profile.updateFavoriteGenres);
+router.put('/favoriteGenres', isLoggedIn, profile.updateFavoriteGenres);
 
 
-router.put('/settings/publicGameList', profile.updatePublicGamesList);
+router.put('/settings/publicGameList', isLoggedIn, profile.updatePublicGamesList);
 
 module.exports = router;

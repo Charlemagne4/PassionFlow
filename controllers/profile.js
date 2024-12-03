@@ -24,7 +24,7 @@ exports.getFriendProfile = async (req, res, next) => {
 
     try {
         const user = await User.findById(userId);
-
+        user.favoriteGenres = user.favoriteGenres.map(id => themes[id]);
         if (!user) {
             return res.status(404).render("errors/404", { message: 'User not found' });
         }

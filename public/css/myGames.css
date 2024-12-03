@@ -227,9 +227,6 @@
     text-overflow: ellipsis; /* Optional: add ellipsis if text is too long */
     
 }
-.game-themes{
-    
-}
 .game-info h2 {
     font-size: 1em;
     margin: 0;

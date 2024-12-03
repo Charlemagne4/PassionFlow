@@ -44,3 +44,15 @@ grid-area: search-container;
 .not-found{
     text-align: center;
 }
+/* Small Phones */
+@media (max-width: 800px) {
+.game-explore {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "search-container"
+    "games-grid";
+    overflow: auto;
+}
+
+}

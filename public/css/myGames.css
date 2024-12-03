@@ -180,3 +180,117 @@
     box-shadow: 0 4px 6px var(--shadow-dark); /* Optional: Add a shadow effect */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Optional: Smooth effects for hover */
 }
+
+/* Small Phones */
+@media (max-width: 800px) {
+/* Layout for the games grid */
+.games-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-dark); /* Subtle shadow */
+}
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--tab-gap);
+    justify-content: center;
+    margin-top:0.5% ;
+}
+.tabs .allGames {
+    grid-column: span 3;
+    text-align: center;
+    max-width: 100%;
+
+}
+.game-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    grid-area: img;
+    grid-row: span 2;
+    border-bottom: 3px solid var(--accent-line); /* Accent line */
+}
+.game-info p {
+    font-size: 0.7em;
+    color: var(--text-muted);
+}
+.game-title {
+    grid-area: title;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0 10px 2%;
+    color: var(--text-accent);
+    white-space: normal; /* Allow text to wrap */
+    overflow: visible; /* Allow overflow to be visible */
+    text-overflow: ellipsis; /* Optional: add ellipsis if text is too long */
+    
+}
+.game-themes{
+    
+}
+.game-info h2 {
+    font-size: 1em;
+    margin: 0;
+    color: var(--text-accent);
+    text-overflow: ellipsis;
+}
+}
+
+/* medium Phones */
+@media (max-width: 1440px) {
+/* Layout for the games grid */
+.games-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-dark); /* Subtle shadow */
+}
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--tab-gap);
+    justify-content: center;
+    margin-top:0.5% ;
+}
+.tabs .allGames {
+    grid-column: span 3;
+    text-align: center;
+    max-width: 100%;
+}
+.tabs .tab-link {
+    max-width: none;
+
+}
+.game-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    grid-area: img;
+    grid-row: span 2;
+    border-bottom: 3px solid var(--accent-line); /* Accent line */
+}
+.game-info p {
+    font-size: 1em;
+    color: var(--text-muted);
+}
+.game-title {
+    grid-area: title;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0 10px 2%;
+    color: var(--text-accent);
+    white-space: normal; /* Allow text to wrap */
+    overflow: visible; /* Allow overflow to be visible */
+    text-overflow: ellipsis; /* Optional: add ellipsis if text is too long */
+    
+}
+.game-info h2 {
+    font-size: 1.3em;
+    margin: 0;
+    color: var(--text-accent);
+    text-overflow: ellipsis;
+}
+}

@@ -34,6 +34,10 @@
     border-radius: 5px; /* Rounded corners for the image */
 }
 
+#search-container{
+    width: 50%; margin: 0 auto;
+}
+
 .game-title {
     white-space: nowrap; /* Prevents text wrapping */
     overflow: hidden; /* Hides overflow text */
@@ -41,4 +45,14 @@
     color: #252525;
     margin: 0; /* Reset margin to avoid extra spacing */
     line-height: normal; /* Reset line height to normal */
+}
+
+/* Small Phones */
+@media (max-width: 800px) {
+#search-container{
+    width: 100%;
+    margin: 0;
+}
+
+
 }

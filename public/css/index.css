@@ -144,3 +144,59 @@
   background-color: darkred;
   
 }
+
+/* Small Phones */
+@media (max-width: 480px) {
+    .games-grid {
+      margin: 0;
+    display: grid;
+    gap: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-dark);
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    max-width: 100%;
+  } 
+  .review-Label{
+    display: none;
+  }
+  .game-title {
+    text-align: center;
+}
+}
+
+/* Medium Phones */
+@media (max-width: 768px) {
+  .games-grid {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-dark);
+    grid-template-columns: repeat(4, 1fr); 
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    max-width: 100%;
+    
+  } 
+  .review-Label{
+    display: none;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+
+    .games-grid {
+      margin: 0;
+    display: grid;
+    gap: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-dark);
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    max-width: 100%;
+  } 
+}

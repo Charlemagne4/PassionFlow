@@ -53,7 +53,7 @@
         </div>
 <!-- Heart Button -->
 <div class="col-auto pe-1">
-    <% if (currentUser.favoriteGames.includes(game.id)) { %>
+    <% if (currentUser && currentUser.favoriteGames && currentUser.favoriteGames.includes(game.id)) { %>
         <form action="/games/<%= game.id %>/unfavorite" method="POST">
             <button class="btn btn-danger" title="Remove from favorites">
                 <span class="fw-bold">❤️</span> 
@@ -67,6 +67,7 @@
         </form>
     <% } %>
 </div>
+
 
     </div>
 

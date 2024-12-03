@@ -69,6 +69,47 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
+app.use(helmet())
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com"
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://cdn.jsdelivr.net",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/"
+];
+const connectSrcUrls = [
+    "https://api.maptiler.com/"
+];
+const fontSrcUrls = ["https://cdnjs.cloudflare.com"];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/drcfc3chz/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+                "https://icon-library.com/images",
+                "https://images.igdb.com/igdb/",
+                "https://api.maptiler.com/"
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
 
 app.use('/', function (req, res, next) {
     res.locals.currentUser = req.user;

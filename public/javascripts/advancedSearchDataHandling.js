@@ -109,7 +109,7 @@ function logFormData() {
                         }
                         const gamesCard = `
         <a href="/games/${game.id}" class="game-card">
-            <img src="${game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg'}" alt="Elden Ring">
+            <img src="${game.cover ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg` : 'https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg'}" alt="${game.name}">
             <div class="game-info">
                 <h2 class="game-title" data-title="${game.name}">${game.name}</h2>
                 <span class="game-rating">
@@ -123,7 +123,7 @@ function logFormData() {
                     })
 
                 } else {
-                    gameResults.innerHTML = '<p>No games found.</p>';
+                    gameResults.innerHTML = '<p class="not-found">No games found.</p>';
                 }
 
             })

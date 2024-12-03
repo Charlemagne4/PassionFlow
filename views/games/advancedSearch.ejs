@@ -57,7 +57,7 @@
                                 name="platforms[]" 
                                 value="<%= platform.id %>" 
                                 />
-                            <label for="platform-<%= platform.id %>"><%= platform.name %></label>
+                            <label for="platform-<%= platform.id %>"><%= platform.name.substring(0, 30) %></label>
                         </div>
                     <% }) %>
             </div>

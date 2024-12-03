@@ -74,42 +74,54 @@ const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
-    "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com"
+    "https://cdn.jsdelivr.net/",
+    "https://cdn.maptiler.com/",
+    "https://code.jquery.com/"
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
     "https://cdn.jsdelivr.net",
+    "https://code.jquery.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
     "https://cdnjs.cloudflare.com/"
 ];
 const connectSrcUrls = [
-    "https://api.maptiler.com/"
+    "https://api.maptiler.com/",
+    "https://code.jquery.com/"
 ];
 const fontSrcUrls = ["https://cdnjs.cloudflare.com"];
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: [],
-            connectSrc: ["'self'", ...connectSrcUrls],
-            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-            workerSrc: ["'self'", "blob:"],
-            objectSrc: [],
+            defaultSrc: ["'self'"], // Default allow 'self'
+            connectSrc: ["'self'", ...connectSrcUrls], // Adjust for external API calls
+            scriptSrc: [
+                "'self'",
+                "'unsafe-inline'", // Allows inline scripts and event handlers (use cautiously)
+                ...scriptSrcUrls,
+            ],
+            scriptSrcAttr: ["'self'", "'unsafe-inline'"], // Allows inline event handlers (e.g., `onclick`)
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls], // Styles
+            workerSrc: ["'self'", "blob:"], // For web workers
+            objectSrc: ["'none'"], // Prevent embedding objects
             imgSrc: [
                 "'self'",
                 "blob:",
                 "data:",
-                "https://res.cloudinary.com/drcfc3chz/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+                "https://res.cloudinary.com/drcfc3chz/", // Replace with your Cloudinary account
                 "https://icon-library.com/images",
                 "https://images.igdb.com/igdb/",
-                "https://api.maptiler.com/"
+                "https://i.ytimg.com/vi/m8i5JuwI_V0/hqdefault.jpg",
+                "https://api.maptiler.com/",
+                "https://www.pluggedin.com/",
+                "https://pngimg.com/uploads/pacman/",
             ],
-            fontSrc: ["'self'", ...fontSrcUrls],
+            fontSrc: ["'self'", ...fontSrcUrls], // For fonts
         },
     })
 );
+
 
 app.use('/', function (req, res, next) {
     res.locals.currentUser = req.user;

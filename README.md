@@ -2,6 +2,8 @@
 
 PassionFlow is a Node.js/Express web app for building and sharing your video game backlog. It lets you search games via the IGDB API, organize them into lists (e.g. playing, completed, to play), and browse your own and other users’ libraries. User profiles, favorites, and friend features turn it into a small social space around what you’re playing.
 
+Link: https://passionflow.onrender.com
+
 ---
 
 ### 1. Project Title & Short Description
